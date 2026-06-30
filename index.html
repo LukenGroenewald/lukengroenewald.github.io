@@ -592,11 +592,6 @@
     .corner-bl { bottom: -1px; left: -1px; border-width: 0 0 1px 1px; }
     .corner-br { bottom: -1px; right: -1px; border-width: 0 1px 1px 0; }
 
-    .schematic-svg {
-      width: 100%;
-      height: auto;
-    }
-
     .hero-canvas-wrap { position: relative; width: 100%; min-height: 360px; }
     #heroCanvas { display: block; width: 100%; height: 420px; }
     .hero-fallback {
@@ -612,30 +607,6 @@
       opacity: 0; transition: opacity 0.2s ease; z-index: 6;
     }
     .hero-node-label.show { opacity: 1; }
-
-    .svg-node {
-      fill: #060709;
-      stroke: var(--text-dim);
-      stroke-width: 1.5;
-      transition: all 0.3s;
-      cursor: pointer;
-    }
-
-    .svg-node:hover {
-      stroke: var(--accent);
-      fill: var(--accent-dim);
-    }
-
-    .svg-link {
-      stroke: rgba(255, 255, 255, 0.05);
-      stroke-width: 1;
-      stroke-dasharray: 5;
-      animation: flowPath 30s linear infinite;
-    }
-
-    @keyframes flowPath {
-      to { stroke-dashoffset: -100; }
-    }
 
     /* ==========================================================================
        6. TELEMETRY STATS GRID
@@ -1465,7 +1436,7 @@
       });
 
       // Magnetic hover effects
-      document.querySelectorAll('a, button, .blueprint-card, .svg-node').forEach(el => {
+      document.querySelectorAll('a, button, .blueprint-card').forEach(el => {
         el.addEventListener('mouseenter', () => {
           bpCursor.style.width = '24px';
           bpCursor.style.height = '24px';
@@ -1553,20 +1524,6 @@
       revealObserver.observe(el);
     });
 
-    // ==========================================
-    // 4. Interactive Schematic SVG Hover
-    // ==========================================
-    const svgNodes = document.querySelectorAll('.svg-node');
-    svgNodes.forEach(node => {
-      node.addEventListener('mouseenter', () => {
-        node.setAttribute('r', '20');
-        node.style.stroke = 'var(--accent)';
-      });
-      node.addEventListener('mouseleave', () => {
-        const defaultR = node.id === 'node1' || node.id === 'node4' ? '16' : node.id === 'node5' ? '10' : '12';
-        node.setAttribute('r', defaultR);
-      });
-    });
   </script>
 
   <script>
