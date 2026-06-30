@@ -1023,6 +1023,17 @@
     .footer-link:hover {
       color: var(--accent);
     }
+
+    .boot-typing::after { content: '_'; color: var(--accent); animation: blink 1s steps(1) infinite; }
+    #heroCanvas { opacity: 0; transition: opacity 0.9s ease; }
+    #heroCanvas.booted { opacity: 1; }
+    .boot-skip {
+      position: fixed; bottom: 1.25rem; right: 1.25rem; z-index: 1200;
+      font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-dim); border: 1px dashed rgba(255,255,255,0.12); padding: 0.4rem 0.7rem;
+      background: rgba(6,7,9,0.8); cursor: pointer;
+    }
+    .boot-skip:hover { color: var(--accent); border-color: var(--accent-dim); }
   </style>
 </head>
 <body>
@@ -1708,6 +1719,56 @@
       camera.aspect = w/h; camera.updateProjectionMatrix(); renderer.setSize(w, h, false);
       renderer.render(scene, camera);
     });
+  })();
+  </script>
+
+  <script>
+  (function(){
+    var KEY = 'gi_booted_v1';
+    var canvas = document.getElementById('heroCanvas');
+    var meta = document.querySelector('.hero-meta');
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var fullText = meta ? meta.textContent : '';
+
+    function finishInstant(){
+      if (canvas) canvas.classList.add('booted');
+      if (meta) meta.textContent = fullText;
+    }
+
+    // Repeat visit or reduced motion: skip the show
+    var seen = false;
+    try { seen = !!localStorage.getItem(KEY); } catch(e){}
+    if (reduce || seen){ finishInstant(); return; }
+
+    // First visit: play it
+    if (meta) meta.textContent = '';
+    var skip = document.createElement('div');
+    skip.className = 'boot-skip'; skip.textContent = 'Skip intro';
+    document.body.appendChild(skip);
+
+    var done = false;
+    function finish(){
+      if (done) return; done = true;
+      try { localStorage.setItem(KEY, '1'); } catch(e){}
+      if (canvas) canvas.classList.add('booted');
+      if (meta){ meta.classList.remove('boot-typing'); meta.textContent = fullText; }
+      if (skip.parentNode) skip.parentNode.removeChild(skip);
+    }
+    skip.addEventListener('click', finish);
+
+    // Sequence: fade construct in, then type the meta line
+    setTimeout(function(){ if (canvas) canvas.classList.add('booted'); }, 400);
+    var idx = 0;
+    if (meta) meta.classList.add('boot-typing');
+    var typer = setInterval(function(){
+      if (done){ clearInterval(typer); return; }
+      idx++;
+      if (meta) meta.textContent = fullText.slice(0, idx);
+      if (idx >= fullText.length){ clearInterval(typer); setTimeout(finish, 300); }
+    }, 45);
+
+    // Safety auto-complete
+    setTimeout(finish, 4000);
   })();
   </script>
 </body>
