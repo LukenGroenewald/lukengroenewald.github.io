@@ -1559,6 +1559,14 @@
     var fallback = document.getElementById('heroFallback');
     if (!THREE || !canvas || !wrap) return;
 
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function webglOK(){
+      try { var c = document.createElement('canvas');
+        return !!(window.WebGLRenderingContext && (c.getContext('webgl') || c.getContext('experimental-webgl')));
+      } catch(e){ return false; }
+    }
+    if (!webglOK()){ return; } // leave static SVG fallback visible
+
     // expose for later tasks
     var HERO = window.__hero = {};
 
@@ -1577,7 +1585,8 @@
 
     var group = new THREE.Group(); scene.add(group);
 
-    var icoGeo = new THREE.IcosahedronGeometry(1.7, 1);
+    var isSmall = window.innerWidth < 768;
+    var icoGeo = new THREE.IcosahedronGeometry(1.7, isSmall ? 0 : 1);
     var shell = new THREE.LineSegments(
       new THREE.EdgesGeometry(icoGeo, 1),
       new THREE.LineBasicMaterial({ color: 0x22D3EE, transparent: true, opacity: 0.9 })
@@ -1691,7 +1700,15 @@
       }
       renderer.render(scene, camera);
     }
-    loop();
+    if (reduceMotion){
+      group.updateMatrixWorld();
+      for (var s = 0; s < nodes.length; s++){ projectLabel(nodes[s], HERO.labels[s]); HERO.labels[s].classList.add('show'); }
+      renderer.render(scene, camera);
+      running = false;                  // no animation loop
+      HERO.setRunning = function(){};   // neutralize IntersectionObserver resume so reduced-motion stays static
+    } else {
+      loop();
+    }
 
     // --- scroll director: dolly the camera as hero leaves ---
     var baseZ = 6;
