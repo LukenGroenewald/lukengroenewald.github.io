@@ -3,133 +3,1530 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Luken Groenewald</title>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <title>Groenewal Incorporate | Custom Software Engineering &amp; Automation</title>
+  <meta name="description" content="Groenewal Incorporate structures premium custom-compiled digital assets, high-performance web applications, and AI integrations." />
+  
+  <!-- Google Fonts: Cormorant Garamond & Space Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
+  <style>
+    /* ==========================================================================
+       1. SYSTEM VARIABLES & RESET
+       ========================================================================== */
     :root {
-      --bg: #0d1117;
-      --surface: #161b22;
-      --border: #30363d;
-      --accent: #58a6ff;
-      --text: #c9d1d9;
-      --muted: #8b949e;
+      --bg: #060709;
+      --surface: #0E1015;
+      --surface-elevated: #141820;
+      
+      --accent: #BFFF00;          /* Acid Neon Lime */
+      --accent-dim: rgba(191, 255, 0, 0.15);
+      --accent-muted: rgba(191, 255, 0, 0.4);
+      
+      --glow-violet: #7A00FF;     /* Cyber Violet */
+      --glow-blue: #0066FF;       /* Deep Cobalt */
+      
+      --text-main: #FFFFFF;
+      --text-muted: #8E96A3;
+      --text-dim: #4B525E;
+      
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-mono: 'Space Mono', monospace;
+      --transition-speed: 0.5s;
+      --transition: all var(--transition-speed) cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 100px;
     }
 
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-    }
-
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 2.5rem 3rem;
-      max-width: 560px;
-      width: 100%;
-      text-align: center;
-    }
-
-    .avatar {
-      width: 96px;
-      height: 96px;
-      border-radius: 50%;
-      border: 3px solid var(--border);
-      margin: 0 auto 1.25rem;
-      background: var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2.5rem;
-      overflow: hidden;
-    }
-
-    h1 {
-      font-size: 1.6rem;
-      font-weight: 600;
-      margin-bottom: 0.25rem;
-      color: #e6edf3;
-    }
-
-    .handle {
-      color: var(--muted);
-      font-size: 1rem;
-      margin-bottom: 1.25rem;
-    }
-
-    .bio {
-      color: var(--text);
-      font-size: 0.95rem;
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
       line-height: 1.6;
-      margin-bottom: 1.75rem;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
 
-    .links {
+    h1, h2, h3, h4 {
+      font-family: var(--font-serif);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    p {
+      color: var(--text-muted);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* ==========================================================================
+       2. CINEMATIC BACKGROUND SYSTEM
+       ========================================================================== */
+    .blueprint-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-size: 80px 80px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.012) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.012) 1px, transparent 1px);
+      z-index: -2;
+      pointer-events: none;
+    }
+
+    .glow-orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(160px);
+      opacity: 0.16;
+      z-index: -3;
+      pointer-events: none;
+    }
+
+    .glow-orb-1 {
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, var(--glow-violet) 0%, rgba(122,0,255,0) 70%);
+      top: -20%;
+      left: -10%;
+      animation: pulseOrb1 25s infinite alternate ease-in-out;
+    }
+
+    .glow-orb-2 {
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, var(--glow-blue) 0%, rgba(0,102,255,0) 70%);
+      bottom: -15%;
+      right: -10%;
+      animation: pulseOrb2 30s infinite alternate ease-in-out;
+    }
+
+    @keyframes pulseOrb1 {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(150px, 100px) scale(1.15); }
+    }
+
+    @keyframes pulseOrb2 {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(-100px, -80px) scale(0.9); }
+    }
+
+    /* Technical HUD Panel */
+    .hud-panel {
+      position: fixed;
+      bottom: 2rem;
+      left: 2rem;
+      background: rgba(6, 7, 9, 0.9);
+      border: 1px solid var(--accent-dim);
+      padding: 1rem;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      color: var(--accent);
+      z-index: 100;
+      pointer-events: none;
+      line-height: 1.6;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      display: none;
+    }
+
+    @media (min-width: 1024px) {
+      .hud-panel {
+        display: block;
+      }
+    }
+
+    /* Interactive Cursor Dot */
+    .blueprint-cursor {
+      width: 12px;
+      height: 12px;
+      background-color: var(--accent);
+      border-radius: 50%;
+      position: fixed;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 9999;
+      transition: width 0.15s, height 0.15s, background-color 0.15s;
+      display: none;
+    }
+
+    @media (min-width: 1024px) {
+      .blueprint-cursor {
+        display: block;
+      }
+    }
+
+    /* ==========================================================================
+       3. SYSTEM CORE COMPONENTS
+       ========================================================================== */
+    .btn-tech {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.8rem 1.75rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      border-radius: 0;
+      cursor: pointer;
+      transition: var(--transition);
+      gap: 0.75rem;
+      border: 1px solid var(--accent);
+      background-color: transparent;
+      color: var(--accent);
+      position: relative;
+    }
+
+    .btn-tech::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--accent);
+      z-index: -1;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn-tech:hover {
+      color: #000000;
+    }
+
+    .btn-tech:hover::before {
+      transform: scaleX(1);
+    }
+
+    .btn-tech-secondary {
+      border-color: var(--text-dim);
+      color: var(--text-main);
+    }
+
+    .btn-tech-secondary::before {
+      background-color: var(--text-main);
+    }
+
+    .btn-tech-secondary:hover {
+      color: #000000;
+    }
+
+    /* Section Tags */
+    .section-header {
+      margin-bottom: 5rem;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+      padding-bottom: 2rem;
+    }
+
+    .section-code {
+      font-size: 0.75rem;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 1rem;
+      letter-spacing: 0.05em;
+    }
+
+    .section-title {
+      font-size: 3.5rem;
+      font-weight: 300;
+      line-height: 1.1;
+    }
+
+    @media (min-width: 768px) {
+      .section-title {
+        font-size: 4.5rem;
+      }
+    }
+
+    .section-title span {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    /* SVG Self-Drawing Card Template */
+    .blueprint-card {
+      position: relative;
+      background: rgba(14, 16, 21, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      padding: 2.5rem 2rem;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: background 0.3s ease;
+    }
+
+    .card-border-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .border-rect {
+      fill: none;
+      stroke: var(--accent);
+      stroke-width: 2.5;
+      stroke-dasharray: 2000;
+      stroke-dashoffset: 2000;
+      transition: stroke-dashoffset 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .blueprint-card:hover {
+      background: rgba(14, 16, 21, 0.9);
+    }
+
+    .blueprint-card:hover .border-rect {
+      stroke-dashoffset: 0;
+    }
+
+    /* Scroll Animations */
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal-on-scroll.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .delay-1 { transition-delay: 0.15s; }
+    .delay-2 { transition-delay: 0.3s; }
+    .delay-3 { transition-delay: 0.45s; }
+
+    /* ==========================================================================
+       4. HEADER & NAV SYSTEM
+       ========================================================================== */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background: rgba(6, 7, 9, 0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
+      transition: var(--transition);
+    }
+
+    .header-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 90px;
+    }
+
+    .brand-serif {
+      font-size: 1.5rem;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .brand-serif span {
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      border: 1px solid var(--accent);
+      padding: 0.1rem 0.3rem;
+      margin-left: 0.25rem;
+    }
+
+    .nav-links {
+      display: none;
+    }
+
+    @media (min-width: 1024px) {
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 3rem;
+      }
+
+      .nav-item {
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        color: var(--text-muted);
+      }
+
+      .nav-item:hover, .nav-item.active {
+        color: var(--accent);
+      }
+    }
+
+    .nav-toggle {
+      background: none;
+      border: none;
+      color: var(--text-main);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border: 1px dashed rgba(255,255,255,0.1);
+    }
+
+    @media (min-width: 1024px) {
+      .nav-toggle {
+        display: none;
+      }
+    }
+
+    /* Mobile Menu Drawer */
+    .mobile-menu-drawer {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 100%;
+      max-width: 450px;
+      height: 100vh;
+      background: var(--surface);
+      border-left: 1px dashed rgba(255,255,255,0.1);
+      z-index: 1001;
+      padding: 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .mobile-menu-drawer.open {
+      right: 0;
+    }
+
+    .drawer-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.8);
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .drawer-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .drawer-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4rem;
+    }
+
+    .drawer-close {
+      background: none;
+      border: none;
+      color: var(--text-main);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border: 1px dashed rgba(255,255,255,0.1);
+    }
+
+    .drawer-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .drawer-nav-item {
+      font-family: var(--font-serif);
+      font-size: 2.25rem;
+      color: var(--text-muted);
+    }
+
+    .drawer-nav-item:hover {
+      color: var(--accent);
+      padding-left: 0.75rem;
+    }
+
+    /* ==========================================================================
+       5. HERO SPLIT SECTION
+       ========================================================================== */
+    .hero {
+      padding-top: 180px;
+      padding-bottom: 100px;
+      min-height: 95vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    .hero-split {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    @media (min-width: 1024px) {
+      .hero-split {
+        grid-template-columns: 1.1fr 0.9fr;
+      }
+    }
+
+    .hero-text {
+      max-width: 700px;
+    }
+
+    .hero-meta {
+      font-size: 0.75rem;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .hero-meta::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      background-color: var(--accent);
+      display: inline-block;
+      animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .hero-title {
+      font-size: 3.8rem;
+      font-weight: 300;
+      line-height: 1.05;
+      margin-bottom: 2rem;
+    }
+
+    @media (min-width: 768px) {
+      .hero-title {
+        font-size: 5rem;
+      }
+    }
+
+    .hero-title span {
+      color: var(--accent);
+      font-style: italic;
+    }
+
+    .hero-desc {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 3.5rem;
+      max-width: 580px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    /* Blueprint System Interactive Diagram */
+    .schematic-box {
+      border: 1px dashed rgba(255,255,255,0.06);
+      padding: 2.5rem;
+      background: rgba(14, 16, 21, 0.2);
+      position: relative;
+    }
+
+    .schematic-corner {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-color: var(--accent-muted);
+      border-style: solid;
+      pointer-events: none;
+    }
+
+    .corner-tl { top: -1px; left: -1px; border-width: 1px 0 0 1px; }
+    .corner-tr { top: -1px; right: -1px; border-width: 1px 1px 0 0; }
+    .corner-bl { bottom: -1px; left: -1px; border-width: 0 0 1px 1px; }
+    .corner-br { bottom: -1px; right: -1px; border-width: 0 1px 1px 0; }
+
+    .schematic-svg {
+      width: 100%;
+      height: auto;
+    }
+
+    .svg-node {
+      fill: #060709;
+      stroke: var(--text-dim);
+      stroke-width: 1.5;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .svg-node:hover {
+      stroke: var(--accent);
+      fill: var(--accent-dim);
+    }
+
+    .svg-link {
+      stroke: rgba(255, 255, 255, 0.05);
+      stroke-width: 1;
+      stroke-dasharray: 5;
+      animation: flowPath 30s linear infinite;
+    }
+
+    @keyframes flowPath {
+      to { stroke-dashoffset: -100; }
+    }
+
+    /* ==========================================================================
+       6. TELEMETRY STATS GRID
+       ========================================================================== */
+    .telemetry-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background-color: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.05);
+      margin-bottom: 6rem;
+    }
+
+    @media (min-width: 768px) {
+      .telemetry-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .telemetry-card {
+      background-color: var(--bg);
+      padding: 3rem 2rem;
+      text-align: left;
+    }
+
+    .telemetry-label {
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .telemetry-val {
+      font-family: var(--font-serif);
+      font-size: 3.5rem;
+      line-height: 1;
+      color: var(--accent);
+    }
+
+    /* ==========================================================================
+       7. SERVICES (ENGINEERING METHOD)
+       ========================================================================== */
+    .services {
+      padding: 100px 0;
+      position: relative;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    @media (min-width: 768px) {
+      .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .service-tech-id {
+      font-size: 0.7rem;
+      color: var(--accent-muted);
+      margin-bottom: 2rem;
+      display: block;
+    }
+
+    .service-title {
+      font-size: 2.2rem;
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+      color: var(--text-main);
+    }
+
+    .service-desc {
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+    }
+
+    .service-metrics {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      border-top: 1px dashed rgba(255,255,255,0.05);
+      padding-top: 2rem;
+      margin-top: auto;
+    }
+
+    .service-metric-item {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .service-metric-item span:last-child {
+      color: var(--accent);
+    }
+
+    /* ==========================================================================
+       8. SHOWCASE PORTFOLIO GRID (DYNAMIC SVGS)
+       ========================================================================== */
+    .showcase {
+      padding: 100px 0;
+    }
+
+    .showcase-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    @media (min-width: 768px) {
+      .showcase-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .showcase-card {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .showcase-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      margin-bottom: 1.5rem;
+    }
+
+    .showcase-title {
+      font-size: 2.2rem;
+      font-weight: 300;
+      margin-bottom: 1rem;
+    }
+
+    .showcase-title:hover {
+      color: var(--accent);
+    }
+
+    .showcase-desc {
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+    }
+
+    .showcase-tech-list {
       display: flex;
       flex-wrap: wrap;
       gap: 0.75rem;
-      justify-content: center;
+      margin-bottom: 2rem;
     }
 
-    .links a {
+    .showcase-tech-tag {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 0.25rem 0.6rem;
+    }
+
+    .showcase-link {
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
-      text-decoration: none;
+      gap: 0.5rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-main);
+      margin-top: auto;
+    }
+
+    .showcase-link svg {
+      width: 14px;
+      height: 14px;
+      transition: var(--transition);
+    }
+
+    .blueprint-card:hover .showcase-link {
       color: var(--accent);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 0.45rem 1rem;
-      font-size: 0.88rem;
-      transition: background 0.15s, border-color 0.15s;
     }
 
-    .links a:hover {
-      background: rgba(88, 166, 255, 0.08);
-      border-color: var(--accent);
+    .blueprint-card:hover .showcase-link svg {
+      transform: translate(3px, -3px);
+      stroke: var(--accent);
     }
 
-    .divider {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 1.75rem 0;
+    /* ==========================================================================
+       9. ADVANTAGE DIAGNOSTICS PANEL
+       ========================================================================== */
+    .advantage {
+      padding: 100px 0;
+      border-top: 1px dashed rgba(255, 255, 255, 0.05);
     }
 
+    .advantage-split {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    @media (min-width: 1024px) {
+      .advantage-split {
+        grid-template-columns: 0.95fr 1.05fr;
+      }
+    }
+
+    .advantage-text h3 {
+      font-size: 2.5rem;
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+    }
+
+    .advantage-text p {
+      margin-bottom: 1.5rem;
+    }
+
+    .diagnostics-panel {
+      border: 1px solid rgba(255,255,255,0.05);
+      background-color: var(--surface);
+      padding: 2rem;
+    }
+
+    .diagnostics-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      color: var(--accent);
+      border-bottom: 1px dashed rgba(255,255,255,0.08);
+      padding-bottom: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .diagnostic-row {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1.25rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+
+    .diagnostic-row:last-child {
+      border-bottom: none;
+    }
+
+    .diagnostic-indicator {
+      width: 8px;
+      height: 8px;
+      border: 1px solid var(--accent);
+      background-color: var(--accent-dim);
+      flex-shrink: 0;
+    }
+
+    .diagnostic-row:hover .diagnostic-indicator {
+      background-color: var(--accent);
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    .diagnostic-info {
+      flex-grow: 1;
+    }
+
+    .diagnostic-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 0.15rem;
+    }
+
+    .diagnostic-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* ==========================================================================
+       10. CONTACT CONSOLE
+       ========================================================================== */
+    .contact {
+      padding: 120px 0;
+      position: relative;
+    }
+
+    .console-box {
+      background-color: var(--surface);
+      border: 1px dashed rgba(255,255,255,0.1);
+      padding: 3rem 2rem;
+      max-width: 850px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    @media (min-width: 768px) {
+      .console-box {
+        padding: 4rem;
+      }
+    }
+
+    .console-title {
+      font-size: 2.8rem;
+      font-weight: 300;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .console-desc {
+      text-align: center;
+      max-width: 580px;
+      margin: 0 auto 3rem;
+      font-size: 0.85rem;
+    }
+
+    .console-details {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      border-top: 1px dashed rgba(255,255,255,0.06);
+      padding-top: 3rem;
+      margin-bottom: 3.5rem;
+    }
+
+    @media (min-width: 600px) {
+      .console-details {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .console-details-single {
+      grid-template-columns: 1fr;
+      justify-items: center;
+      text-align: center;
+    }
+
+    .console-detail-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .console-detail-tag {
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+
+    .console-detail-val {
+      font-size: 1.05rem;
+      color: var(--accent);
+    }
+
+    .console-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    /* Footer */
     .footer {
-      color: var(--muted);
-      font-size: 0.8rem;
+      border-top: 1px dashed rgba(255, 255, 255, 0.05);
+      background-color: #040507;
+      padding: 4rem 0 2rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .footer-copyright {
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+    }
+
+    .footer-link {
+      font-size: 0.72rem;
+      color: var(--text-dim);
+    }
+
+    .footer-link:hover {
+      color: var(--accent);
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <div class="avatar">👤</div>
-    <h1>Luken Groenewald</h1>
-    <p class="handle">@LukenGroenewald</p>
-    <p class="bio">Developer &amp; engineer. Building things that matter.</p>
 
-    <div class="links">
-      <a href="https://github.com/LukenGroenewald" target="_blank" rel="noopener">
-        <!-- GitHub icon -->
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-        GitHub
+  <!-- Technical Background Grid -->
+  <div class="blueprint-grid"></div>
+
+  <!-- Smooth Neon Glow Auroras -->
+  <div class="glow-orb glow-orb-1"></div>
+  <div class="glow-orb glow-orb-2"></div>
+
+  <!-- Cursor follower -->
+  <div class="blueprint-cursor" id="bpCursor"></div>
+
+
+  <!-- Header -->
+  <header class="header" id="header">
+    <div class="container header-container">
+      <a href="#home" class="brand-serif">
+        Groenewal Incorporate <span>SYS_V1</span>
       </a>
-      <a href="mailto:groenewald.incoporate@gmail.com">
-        <!-- Mail icon -->
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.708 2.825L15 11.105V5.383zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741zM1 11.105l4.708-2.897L1 5.383v5.722z"/></svg>
-        Email
-      </a>
+
+      <nav class="nav-links">
+        <a href="#home" class="nav-item active">Home</a>
+        <a href="#services" class="nav-item">Services</a>
+        <a href="#portfolio" class="nav-item">Showcase</a>
+        <a href="#advantage" class="nav-item">Method</a>
+        <a href="#contact" class="nav-item">Contact</a>
+        <a href="#contact" class="btn-tech btn-sm">Consult</a>
+      </nav>
+
+      <button class="nav-toggle" id="drawerOpenBtn" aria-label="Open navigation">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <line x1="4" y1="9" x2="20" y2="9"></line>
+          <line x1="4" y1="15" x2="20" y2="15"></line>
+        </svg>
+      </button>
     </div>
+  </header>
 
-    <hr class="divider" />
-    <p class="footer">groenewald.incoporate@gmail.com</p>
+  <!-- Mobile Drawer Menu -->
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <div class="mobile-menu-drawer" id="menuDrawer">
+    <div class="drawer-top">
+      <div class="brand-serif">
+        Groenewal Incorporate <span>SYS</span>
+      </div>
+      <button class="drawer-close" id="drawerCloseBtn" aria-label="Close navigation">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    
+    <nav class="drawer-list">
+      <a href="#home" class="drawer-nav-item" onclick="toggleMenu()">Home</a>
+      <a href="#services" class="drawer-nav-item" onclick="toggleMenu()">Services</a>
+      <a href="#portfolio" class="drawer-nav-item" onclick="toggleMenu()">Showcase</a>
+      <a href="#advantage" class="drawer-nav-item" onclick="toggleMenu()">Method</a>
+      <a href="#contact" class="drawer-nav-item" onclick="toggleMenu()">Contact</a>
+    </nav>
   </div>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="container hero-split">
+      <div class="hero-text reveal-on-scroll">
+        <span class="hero-meta">ESTABLISHED 2026 / CAPE TOWN</span>
+        <h1 class="hero-title">Precision-Engineered <span>Digital Assets.</span></h1>
+        <p class="hero-desc">We compile high-performance custom web applications, structured database integrations, and automated pipelines for professional services and local firms in South Africa.</p>
+        <div class="hero-actions">
+          <a href="#portfolio" class="btn-tech">Open Showcase</a>
+          <a href="#contact" class="btn-tech btn-tech-secondary">Initial Briefing</a>
+        </div>
+      </div>
+
+      <div class="reveal-on-scroll delay-2">
+        <div class="schematic-box">
+          <div class="schematic-corner corner-tl"></div>
+          <div class="schematic-corner corner-tr"></div>
+          <div class="schematic-corner corner-bl"></div>
+          <div class="schematic-corner corner-br"></div>
+          
+          <!-- Animated Technical System SVG -->
+          <svg class="schematic-svg" viewBox="0 0 400 300">
+            <!-- Connection Lines -->
+            <path class="svg-link" d="M 50 150 L 150 75" />
+            <path class="svg-link" d="M 50 150 L 150 225" />
+            <path class="svg-link" d="M 150 75 L 280 150" />
+            <path class="svg-link" d="M 150 225 L 280 150" />
+            <path class="svg-link" d="M 280 150 L 350 150" />
+            
+            <!-- Nodes -->
+            <circle class="svg-node" id="node1" cx="50" cy="150" r="16" />
+            <circle class="svg-node" id="node2" cx="150" cy="75" r="12" />
+            <circle class="svg-node" id="node3" cx="150" cy="225" r="12" />
+            <circle class="svg-node" id="node4" cx="280" cy="150" r="16" />
+            <circle class="svg-node" id="node5" cx="350" cy="150" r="10" />
+
+            <!-- Labels -->
+            <text x="50" y="185" fill="#BFFF00" font-size="8" text-anchor="middle" font-family="Space Mono">BRIEFING</text>
+            <text x="150" y="55" fill="#8E96A3" font-size="8" text-anchor="middle" font-family="Space Mono">AI_COMPILATION</text>
+            <text x="150" y="255" fill="#8E96A3" font-size="8" text-anchor="middle" font-family="Space Mono">DB_STRUCTURE</text>
+            <text x="280" y="185" fill="#FFFFFF" font-size="8" text-anchor="middle" font-family="Space Mono">SYSTEM_BUILD</text>
+            <text x="350" y="130" fill="#BFFF00" font-size="8" text-anchor="middle" font-family="Space Mono">PUSH</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Telemetry Metrics Grid -->
+  <section class="container reveal-on-scroll">
+    <div class="telemetry-grid">
+      <div class="telemetry-card">
+        <span class="telemetry-label">[SYS_METRIC_01]</span>
+        <div class="telemetry-val">4+</div>
+        <p style="font-size:0.68rem; margin-top:0.75rem;">SPEC_DEMOS_RUNNING</p>
+      </div>
+      <div class="telemetry-card">
+        <span class="telemetry-label">[SYS_METRIC_02]</span>
+        <div class="telemetry-val">100%</div>
+        <p style="font-size:0.68rem; margin-top:0.75rem;">ASYNC_HANDOVER</p>
+      </div>
+      <div class="telemetry-card">
+        <span class="telemetry-label">[SYS_METRIC_03]</span>
+        <div class="telemetry-val">1</div>
+        <p style="font-size:0.68rem; margin-top:0.75rem;">NEXTJS_SAAS_LIVE</p>
+      </div>
+      <div class="telemetry-card">
+        <span class="telemetry-label">[SYS_METRIC_04]</span>
+        <div class="telemetry-val">15+</div>
+        <p style="font-size:0.68rem; margin-top:0.75rem;">AUTOMATIONS_RUN</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services / Capabilities -->
+  <section class="services" id="services">
+    <div class="container">
+      <div class="section-header reveal-on-scroll">
+        <span class="section-code">SERVICE_REGISTRY_0x92</span>
+        <h2 class="section-title">Technical <span>Capabilities.</span></h2>
+      </div>
+
+      <div class="services-grid">
+        <!-- Service Card 1 -->
+        <div class="reveal-on-scroll">
+          <div class="blueprint-card">
+            <!-- Drawing Border SVG -->
+            <svg class="card-border-svg"><rect class="border-rect" x="1.5" y="1.5" width="99%" height="98%" rx="2" /></svg>
+            
+            <span class="service-tech-id">[CAPABILITY: FULL_STACK_DEV]</span>
+            <h3 class="service-title">Custom Web Platforms</h3>
+            <p class="service-desc">We compile responsive, high-performance user interfaces and custom client dashboards integrated with firewalls, authentication layers, and checkout gateways.</p>
+            
+            <div class="service-metrics">
+              <div class="service-metric-item"><span>Framework:</span> <span>Next.js 15, TypeScript</span></div>
+              <div class="service-metric-item"><span>Data Layer:</span> <span>Firebase Firestore / Relational DBs</span></div>
+              <div class="service-metric-item"><span>Deployments:</span> <span>Vercel / AWS Static Sprints</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Service Card 2 -->
+        <div class="reveal-on-scroll delay-1">
+          <div class="blueprint-card">
+            <!-- Drawing Border SVG -->
+            <svg class="card-border-svg"><rect class="border-rect" x="1.5" y="1.5" width="99%" height="98%" rx="2" /></svg>
+            
+            <span class="service-tech-id">[CAPABILITY: DATA_AUTOMATION]</span>
+            <h3 class="service-title">Algorithmic Pipelines</h3>
+            <p class="service-desc">We build automated Python backend systems that scrap directories, organize structured data, and interface directly with LLM inference engines (OpenRouter / OpenAI).</p>
+            
+            <div class="service-metrics">
+              <div class="service-metric-item"><span>Languages:</span> <span>Python, Shell scripts</span></div>
+              <div class="service-metric-item"><span>Integrations:</span> <span>OpenRouter API, Telegram Webhooks</span></div>
+              <div class="service-metric-item"><span>Analytics:</span> <span>Pandas data structuring</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Showcase Portfolio Grid -->
+  <section class="showcase" id="portfolio">
+    <div class="container">
+      <div class="section-header reveal-on-scroll">
+        <span class="section-code">SYSTEM_SHOWCASE_ASSETS</span>
+        <h2 class="section-title">Active <span>Deployments.</span></h2>
+      </div>
+
+      <div class="showcase-grid">
+        <!-- Project 1 -->
+        <div class="showcase-card reveal-on-scroll">
+          <div class="blueprint-card">
+            <svg class="card-border-svg"><rect class="border-rect" x="1.5" y="1.5" width="99%" height="98%" rx="2" /></svg>
+            
+            <div class="showcase-meta">
+              <span>[REPOSITORIES: APEX_LEGAL]</span>
+              <span>[SYS_OK]</span>
+            </div>
+            
+            <h3 class="showcase-title">Apex Legal &amp; Advisory</h3>
+            <p class="showcase-desc">A premium corporate commercial law firm web application featuring interactive practice modules, scroll depth rotations, and an advanced briefing calendar scheduler.</p>
+            
+            <div class="showcase-tech-list">
+              <span class="showcase-tech-tag">HTML5</span>
+              <span class="showcase-tech-tag">Custom CSS Grid</span>
+              <span class="showcase-tech-tag">3D Projection</span>
+            </div>
+            
+            <a href="../Online%20Money/Websites/Local%20businesses/Apex%20Legal/index.html" class="showcase-link" target="_blank">
+              Launch Live Instance
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="7" y1="17" x2="17" y2="7"></line>
+                <polyline points="7 7 17 7 17 17"></polyline>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Project 2 -->
+        <div class="showcase-card reveal-on-scroll delay-1">
+          <div class="blueprint-card">
+            <svg class="card-border-svg"><rect class="border-rect" x="1.5" y="1.5" width="99%" height="98%" rx="2" /></svg>
+            
+            <div class="showcase-meta">
+              <span>[REPOSITORIES: STACK_BURGER]</span>
+              <span>[SYS_OK]</span>
+            </div>
+            
+            <h3 class="showcase-title">Stack Burger Co.</h3>
+            <p class="showcase-desc">High-performance digital menu checkout. Features interactive burger configuration metrics, total cart calculation adjustments, and direct WhatsApp routing tags.</p>
+            
+            <div class="showcase-tech-list">
+              <span class="showcase-tech-tag">Dynamic Cart</span>
+              <span class="showcase-tech-tag">Vanilla JS</span>
+              <span class="showcase-tech-tag">WhatsApp API</span>
+            </div>
+            
+            <a href="../Online%20Money/Websites/Local%20businesses/Stack%20Burger%20Co/index.html" class="showcase-link" target="_blank">
+              Launch Live Instance
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="7" y1="17" x2="17" y2="7"></line>
+                <polyline points="7 7 17 7 17 17"></polyline>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Project 3 -->
+        <div class="showcase-card reveal-on-scroll">
+          <div class="blueprint-card">
+            <svg class="card-border-svg"><rect class="border-rect" x="1.5" y="1.5" width="99%" height="98%" rx="2" /></svg>
+            
+            <div class="showcase-meta">
+              <span>[REPOSITORIES: MARK_ONE_HAIR]</span>
+              <span>[SYS_OK]</span>
+            </div>
+            
+            <h3 class="showcase-title">Mark One Hair Design</h3>
+            <p class="showcase-desc">Minimalist, high-contrast local business branding for a hair salon in Strand, Cape Town. Optimized for swift load speeds and local maps integrations.</p>
+            
+            <div class="showcase-tech-list">
+              <span class="showcase-tech-tag">Light Theme</span>
+              <span class="showcase-tech-tag">Mobile First</span>
+              <span class="showcase-tech-tag">Conveyance Booking</span>
+            </div>
+            
+            <a href="../Online%20Money/Websites/Local%20businesses/Mark%20One%20Hair%20Design/index.html" class="showcase-link" target="_blank">
+              Launch Live Instance
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="7" y1="17" x2="17" y2="7"></line>
+                <polyline points="7 7 17 7 17 17"></polyline>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Project 4 -->
+        <div class="showcase-card reveal-on-scroll delay-1">
+          <div class="blueprint-card">
+            <svg class="card-border-svg"><rect class="border-rect" x="1.5" y="1.5" width="99%" height="98%" rx="2" /></svg>
+            
+            <div class="showcase-meta">
+              <span>[REPOSITORIES: DOGFATHER]</span>
+              <span>[SYS_OK]</span>
+            </div>
+            
+            <h3 class="showcase-title">The Dogfather</h3>
+            <p class="showcase-desc">Warm layout landing page prototype for a Somerset West pet boutique. Integrates client review nodes, operating hour tables, and click-to-dial triggers.</p>
+            
+            <div class="showcase-tech-list">
+              <span class="showcase-tech-tag">Espresso Styling</span>
+              <span class="showcase-tech-tag">Clean Grid</span>
+              <span class="showcase-tech-tag">B2C Marketing</span>
+            </div>
+            
+            <a href="../Online%20Money/Websites/Local%20businesses/The%20Dogfather/index.html" class="showcase-link" target="_blank">
+              Launch Live Instance
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="7" y1="17" x2="17" y2="7"></line>
+                <polyline points="7 7 17 7 17 17"></polyline>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Advantage (Diagnostics Panel) -->
+  <section class="advantage" id="advantage">
+    <div class="container advantage-split">
+      <div class="advantage-text reveal-on-scroll">
+        <span class="section-code">OPERATIONAL_BLUEPRINT_LOGS</span>
+        <h3>The Async Architecture Advantage</h3>
+        <p>Traditional developers coordinate endless live meetings. We build asynchronously. You submit raw blueprints or text requirements, and we structure the code using advanced agentic AI architectures (Antigravity &amp; Claude Code) at 5x speed.</p>
+        <p>No billing surprises. Sprints are executed at fixed cost allocations. You retain total file ownership and Git repository directories directly upon code handover.</p>
+      </div>
+
+      <div class="reveal-on-scroll delay-2">
+        <div class="diagnostics-panel">
+          <div class="diagnostics-header">
+            <span>[DIAGNOSTICS_CONTR_RUNNING]</span>
+            <span>STATUS: 0x90</span>
+          </div>
+
+          <div class="diagnostic-row">
+            <div class="diagnostic-indicator"></div>
+            <div class="diagnostic-info">
+              <div class="diagnostic-title">1. Monitored Code Compiles</div>
+              <div class="diagnostic-desc">No template boilerplate. Codebases compiled with lint validations.</div>
+            </div>
+          </div>
+
+          <div class="diagnostic-row">
+            <div class="diagnostic-indicator"></div>
+            <div class="diagnostic-info">
+              <div class="diagnostic-title">2. Asynchronous Sprints</div>
+              <div class="diagnostic-desc">Requirements tracked digitally. Instant updates to your staging environment.</div>
+            </div>
+          </div>
+
+          <div class="diagnostic-row">
+            <div class="diagnostic-indicator"></div>
+            <div class="diagnostic-info">
+              <div class="diagnostic-title">3. Absolute Code Sovereignty</div>
+              <div class="diagnostic-desc">No lock-in contracts. Complete clean HTML/CSS/JS or Next.js code handover.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact console -->
+  <section class="contact" id="contact">
+    <div class="container reveal-on-scroll">
+      <div class="console-box">
+        <span class="section-code" style="text-align: center; display: block;">ESTABLISH_REMOTE_CONN</span>
+        <h2 class="console-title">Initial Briefing Request</h2>
+        <p class="console-desc">Initiate a briefing for your custom digital asset. Submit requirements directly or request an estimate quote via secure mail.</p>
+        
+        <div class="console-details console-details-single">
+          <div class="console-detail-item">
+            <span class="console-detail-tag">Secure Mail Endpoint</span>
+            <span class="console-detail-val">groenewald.incoporate@gmail.com</span>
+          </div>
+        </div>
+
+        <div class="console-actions">
+          <a href="mailto:groenewald.incoporate@gmail.com" class="btn-tech">Establish Mail Briefing</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-copyright">
+        &copy; 2026 Groenewal Incorporate. South Africa. All structures encrypted.
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/LukenGroenewald" class="footer-link" target="_blank">GitHub</a>
+        <a href="https://www.linkedin.com/in/lukengroenewald" class="footer-link" target="_blank">LinkedIn</a>
+        <a href="mailto:groenewald.incoporate@gmail.com" class="footer-link">Email</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Elements
+    const header = document.getElementById('header');
+    const menuDrawer = document.getElementById('menuDrawer');
+    const drawerOverlay = document.getElementById('drawerOverlay');
+    const drawerOpenBtn = document.getElementById('drawerOpenBtn');
+    const drawerCloseBtn = document.getElementById('drawerCloseBtn');
+    
+    const bpCursor = document.getElementById('bpCursor');
+
+
+    // ==========================================
+    // 1. Precise Cursor Coordinate Tracking HUD
+    // ==========================================
+    if (bpCursor) {
+      document.addEventListener('mousemove', (e) => {
+        bpCursor.style.left = e.clientX + 'px';
+        bpCursor.style.top = e.clientY + 'px';
+        
+
+      });
+
+      // Magnetic hover effects
+      document.querySelectorAll('a, button, .blueprint-card, .svg-node').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          bpCursor.style.width = '24px';
+          bpCursor.style.height = '24px';
+          bpCursor.style.backgroundColor = 'transparent';
+          bpCursor.style.border = '2px solid var(--accent)';
+        });
+        el.addEventListener('mouseleave', () => {
+          bpCursor.style.width = '12px';
+          bpCursor.style.height = '12px';
+          bpCursor.style.backgroundColor = 'var(--accent)';
+          bpCursor.style.border = 'none';
+        });
+      });
+    }
+
+    // Update Scroll Depth HUD
+    window.addEventListener('scroll', () => {
+
+      
+      // Header backdrop effect
+      if (window.scrollY > 40) {
+        header.style.background = 'rgba(6, 7, 9, 0.95)';
+        header.style.borderBottom = '1px solid rgba(255,255,255,0.08)';
+      } else {
+        header.style.background = 'rgba(6, 7, 9, 0.7)';
+        header.style.borderBottom = '1px dashed rgba(255,255,255,0.05)';
+      }
+      
+      updateActiveNavLink();
+    });
+
+    // ==========================================
+    // 2. Navigation Control Drawer
+    // ==========================================
+    function toggleMenu() {
+      menuDrawer.classList.toggle('open');
+      drawerOverlay.classList.toggle('open');
+      if (menuDrawer.classList.contains('open')) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = '';
+      }
+    }
+
+    drawerOpenBtn.addEventListener('click', toggleMenu);
+    drawerCloseBtn.addEventListener('click', toggleMenu);
+    drawerOverlay.addEventListener('click', toggleMenu);
+
+    function updateActiveNavLink() {
+      const sections = document.querySelectorAll('section');
+      const navItems = document.querySelectorAll('.nav-item');
+      
+      let currentSectionId = 'home';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 150;
+        const sectionHeight = section.offsetHeight;
+        if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+          currentSectionId = section.getAttribute('id');
+        }
+      });
+      
+      navItems.forEach(item => {
+        item.classList.remove('active');
+        if (item.getAttribute('href') === `#${currentSectionId}`) {
+          item.classList.add('active');
+        }
+      });
+    }
+
+    // ==========================================
+    // 3. Scroll Reveal Animations (Perspective Slide)
+    // ==========================================
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, {
+      threshold: 0.05,
+      rootMargin: "0px 0px -40px 0px"
+    });
+
+    document.querySelectorAll('.reveal-on-scroll').forEach(el => {
+      revealObserver.observe(el);
+    });
+
+    // ==========================================
+    // 4. Interactive Schematic SVG Hover
+    // ==========================================
+    const svgNodes = document.querySelectorAll('.svg-node');
+    svgNodes.forEach(node => {
+      node.addEventListener('mouseenter', () => {
+        node.setAttribute('r', '20');
+        node.style.stroke = 'var(--accent)';
+      });
+      node.addEventListener('mouseleave', () => {
+        const defaultR = node.id === 'node1' || node.id === 'node4' ? '16' : node.id === 'node5' ? '10' : '12';
+        node.setAttribute('r', defaultR);
+      });
+    });
+  </script>
 </body>
 </html>
