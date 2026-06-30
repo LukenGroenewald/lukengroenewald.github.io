@@ -1611,13 +1611,76 @@
     HERO.nodes = nodes; HERO.lines = lines;
     HERO.labels = Array.prototype.slice.call(document.querySelectorAll('.hero-node-label'));
 
-    renderer.render(scene, camera);
     if (fallback) fallback.classList.add('hidden');
 
     // share refs with later tasks
     HERO.THREE = THREE; HERO.scene = scene; HERO.camera = camera; HERO.renderer = renderer;
     HERO.group = group; HERO.shell = shell; HERO.core = core; HERO.coreHalo = coreHalo;
     HERO.glowTex = glowTex; HERO.wrap = wrap; HERO.canvas = canvas;
+
+    // --- interaction state: full 3D rotation (yaw + pitch, accumulated) ---
+    var driftYaw = 0, tYaw = 0, tPitch = 0, dYaw = 0, dPitch = 0, curYaw = 0, curPitch = 0;
+    var dragging = false, lastX = 0, lastY = 0;
+
+    function parallax(cx, cy){
+      var r = wrap.getBoundingClientRect();
+      tYaw = ((cx - r.left)/r.width - 0.5) * 0.8;
+      tPitch = ((cy - r.top)/r.height - 0.5) * 0.6;
+    }
+    wrap.addEventListener('mousemove', function(e){
+      parallax(e.clientX, e.clientY);
+      if (dragging){ dYaw += (e.clientX-lastX)*0.012; dPitch += (e.clientY-lastY)*0.012; lastX=e.clientX; lastY=e.clientY; }
+    });
+    wrap.addEventListener('mousedown', function(e){ dragging = true; lastX=e.clientX; lastY=e.clientY; });
+    window.addEventListener('mouseup', function(){ dragging = false; });
+    wrap.addEventListener('touchstart', function(e){ if(e.touches.length){ dragging=true; lastX=e.touches[0].clientX; lastY=e.touches[0].clientY; } }, {passive:true});
+    wrap.addEventListener('touchmove', function(e){ if(e.touches.length && dragging){ var t0=e.touches[0]; dYaw += (t0.clientX-lastX)*0.012; dPitch += (t0.clientY-lastY)*0.012; lastX=t0.clientX; lastY=t0.clientY; } }, {passive:true});
+    window.addEventListener('touchend', function(){ dragging = false; });
+
+    var t = 0, running = true, _proj = new THREE.Vector3();
+    HERO.setRunning = function(v){ if (v && !running){ running = true; loop(); } else { running = v; } };
+
+    function projectLabel(node, labelEl){
+      _proj.setFromMatrixPosition(node.matrixWorld);
+      var inFront = _proj.z < 1;
+      _proj.project(camera);
+      var r = wrap.getBoundingClientRect();
+      var x = (_proj.x * 0.5 + 0.5) * r.width;
+      var y = (-_proj.y * 0.5 + 0.5) * r.height;
+      labelEl.style.left = x + 'px';
+      labelEl.style.top = (y - 16) + 'px';
+      return inFront;
+    }
+
+    function loop(){
+      if (!running) return;
+      requestAnimationFrame(loop);
+      t += 0.016;
+      driftYaw += 0.0022;
+      curYaw   += ((tYaw + dYaw) - curYaw) * 0.08;
+      curPitch += ((tPitch + dPitch) - curPitch) * 0.08;
+      group.rotation.y = driftYaw + curYaw;
+      group.rotation.x = curPitch;
+      coreHalo.scale.setScalar(3.2 + Math.sin(t*2)*0.3);
+      core.scale.setScalar(1 + Math.sin(t*2)*0.08);
+      for (var k = 0; k < nodes.length; k++){
+        var u = nodes[k].userData;
+        var a = u.ang + t * u.speed;
+        var x = Math.cos(a)*u.rad, z = Math.sin(a)*u.rad, y = u.depth + Math.sin(t*0.5 + k)*0.15;
+        nodes[k].position.set(x, y, z);
+        var pos = lines[k].geometry.attributes.position;
+        pos.array[0]=0; pos.array[1]=0; pos.array[2]=0;
+        pos.array[3]=x; pos.array[4]=y; pos.array[5]=z;
+        pos.needsUpdate = true;
+      }
+      group.updateMatrixWorld();
+      for (var m = 0; m < nodes.length; m++){
+        var inFront = projectLabel(nodes[m], HERO.labels[m]);
+        HERO.labels[m].classList.toggle('show', inFront);
+      }
+      renderer.render(scene, camera);
+    }
+    loop();
 
     window.addEventListener('resize', function(){
       var w = wrap.clientWidth, h = canvas.clientHeight || 420;
