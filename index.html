@@ -1682,6 +1682,27 @@
     }
     loop();
 
+    // --- scroll director: dolly the camera as hero leaves ---
+    var baseZ = 6;
+    window.addEventListener('scroll', function(){
+      var r = wrap.getBoundingClientRect();
+      var progress = Math.min(Math.max(-r.top / (r.height || 1), 0), 1); // 0 at top, 1 when scrolled one panel past
+      camera.position.z = baseZ + progress * 3;       // dolly back
+      camera.position.y = progress * 0.8;             // drift up
+      camera.lookAt(0, 0, 0);
+    }, { passive: true });
+
+    // --- pause render when offscreen ---
+    if ('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          if (en.isIntersecting){ if (HERO.setRunning) HERO.setRunning(true); }
+          else { if (HERO.setRunning) HERO.setRunning(false); }
+        });
+      }, { threshold: 0.01 });
+      io.observe(wrap);
+    }
+
     window.addEventListener('resize', function(){
       var w = wrap.clientWidth, h = canvas.clientHeight || 420;
       camera.aspect = w/h; camera.updateProjectionMatrix(); renderer.setSize(w, h, false);
