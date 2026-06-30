@@ -16,7 +16,8 @@ Elevate the existing "Cyber-Architectural Blueprint" portfolio from a flat, SVG-
 - **Workflow nodes:** Kept. The 5 labeled nodes (BRIEFING, AI_COMPILATION, DB_STRUCTURE, SYSTEM_BUILD, PUSH) orbit the construct at varying depths with connector lines; labels surface on hover/proximity rather than always-on.
 - **Cinematic scope:** Full page — hero 3D plus scroll-linked 3D depth/parallax on services, showcase, and section reveals (CSS 3D transforms, no extra WebGL).
 - **Intro sequence:** Yes. First-visit-only boot animation (construct self-assembles, HUD text types in), ~1.5–2s, skippable, gated by `localStorage` so repeat visits skip straight to idle hero.
-- **Palette:** Blue. Accent `#2E9BFF` (replaces lime `#BFFF00` everywhere). Construct core `#1E5BFF`. Glow orbs cobalt `#0066FF` and indigo `#3A4DFF`. Final shade subject to a one-value tweak on user confirmation.
+- **Palette:** Cool cyan. Accent `#22D3EE` (replaces lime `#BFFF00` everywhere). Construct core `#0AB4D6`. Glow orbs cyan `#00D3FF` and deep teal `#0E7490`. Final shade subject to a one-value tweak on user confirmation.
+- **Hero interaction:** Construct is fully rotatable on drag (yaw on horizontal drag, pitch on vertical), accumulated so it can be oriented on any axis, with subtle mouse-parallax when not dragging and a gentle idle spin. Touch-drag supported.
 - **Phone number:** Removed. Contact console shows business email (`groenewald.incoporate@gmail.com`) only; WhatsApp line, button, and copy reference deleted. (Already applied.)
 
 ## Architecture
