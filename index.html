@@ -1118,6 +1118,11 @@
                 <circle cx="110" cy="110" r="30" fill="none" stroke="#00D3FF" stroke-width="0.5" opacity="0.5"/>
               </svg>
             </div>
+            <div class="hero-node-label" data-i="0">BRIEFING</div>
+            <div class="hero-node-label" data-i="1">AI_COMPILATION</div>
+            <div class="hero-node-label" data-i="2">DB_STRUCTURE</div>
+            <div class="hero-node-label" data-i="3">SYSTEM_BUILD</div>
+            <div class="hero-node-label" data-i="4">PUSH</div>
           </div>
         </div>
       </div>
@@ -1584,6 +1589,27 @@
     group.add(core);
     var light = new THREE.PointLight(0x0AB4D6, 2, 20); light.position.set(0,0,0); scene.add(light);
     scene.add(new THREE.AmbientLight(0x223344, 0.6));
+
+    var nodeGlowTex = glowTex('rgba(90,230,255,0.95)');
+    var nodes = [], lines = [];
+    var lineMat = new THREE.LineBasicMaterial({ color: 0x22D3EE, transparent: true, opacity: 0.18 });
+    for (var i = 0; i < 5; i++){
+      var n = new THREE.Group();
+      var ang = (i/5) * Math.PI * 2, rad = 2.7 + (i % 2) * 0.5, depth = (i - 2) * 0.55;
+      n.userData = { ang: ang, rad: rad, depth: depth, speed: 0.15 + i * 0.03 };
+      n.add(new THREE.Mesh(new THREE.SphereGeometry(0.10, 16, 16), new THREE.MeshBasicMaterial({ color: 0x22D3EE })));
+      var halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: nodeGlowTex, blending: THREE.AdditiveBlending, transparent: true, depthWrite: false }));
+      halo.scale.setScalar(0.7); n.add(halo);
+      // static initial position (animated in Task 6)
+      n.position.set(Math.cos(ang) * rad, depth, Math.sin(ang) * rad);
+      group.add(n); nodes.push(n);
+
+      var lg = new THREE.BufferGeometry();
+      lg.setAttribute('position', new THREE.BufferAttribute(new Float32Array(6), 3));
+      var ln = new THREE.Line(lg, lineMat); group.add(ln); lines.push(ln);
+    }
+    HERO.nodes = nodes; HERO.lines = lines;
+    HERO.labels = Array.prototype.slice.call(document.querySelectorAll('.hero-node-label'));
 
     renderer.render(scene, camera);
     if (fallback) fallback.classList.add('hidden');
