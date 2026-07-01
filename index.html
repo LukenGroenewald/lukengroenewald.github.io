@@ -373,18 +373,15 @@
       font-weight: 400;
       letter-spacing: -0.01em;
       color: var(--text-main);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+      white-space: nowrap;
     }
 
-    .brand-serif span {
+    .brand-serif .brand-accent {
       color: var(--accent);
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      border: 1px solid var(--accent);
-      padding: 0.1rem 0.3rem;
-      margin-left: 0.25rem;
+    }
+
+    @media (max-width: 420px) {
+      .brand-serif { font-size: 1.2rem; }
     }
 
     .nav-links {
@@ -1124,6 +1121,10 @@
       .lang-wrap { margin-left: auto; margin-right: 0.6rem; }
       .lang-select { max-width: 120px; font-size: 0.6rem; padding: 0.35rem 0.4rem; }
     }
+    /* Language selector when moved into the mobile drawer */
+    .drawer-lang { margin-top: 2rem; }
+    .drawer-lang .lang-wrap { margin: 0; width: 100%; gap: 0.6rem; }
+    .drawer-lang .lang-select { max-width: 100%; width: 100%; font-size: 0.85rem; padding: 0.7rem 0.6rem; }
   </style>
 </head>
 <body>
@@ -1153,9 +1154,7 @@
   <!-- Header -->
   <header class="header" id="header">
     <div class="container header-container">
-      <a href="#home" class="brand-serif">
-        Groenewald Incorporate <span>SYS_V1</span>
-      </a>
+      <a href="#home" class="brand-serif">Groenewald <span class="brand-accent">Incorporate</span></a>
 
       <nav class="nav-links">
         <a href="#home" class="nav-item active" data-i18n="nav.home">Home</a>
@@ -1232,9 +1231,7 @@
   <div class="drawer-overlay" id="drawerOverlay"></div>
   <div class="mobile-menu-drawer" id="menuDrawer">
     <div class="drawer-top">
-      <div class="brand-serif">
-        Groenewald Incorporate <span>SYS</span>
-      </div>
+      <div class="brand-serif">Groenewald <span class="brand-accent">Incorporate</span></div>
       <button class="drawer-close" id="drawerCloseBtn" aria-label="Close navigation">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -1250,6 +1247,8 @@
       <a href="#advantage" class="drawer-nav-item" onclick="toggleMenu()" data-i18n="nav.method">Method</a>
       <a href="#contact" class="drawer-nav-item" onclick="toggleMenu()" data-i18n="nav.contact">Contact</a>
     </nav>
+
+    <div class="drawer-lang" id="drawerLangSlot"></div>
   </div>
 
   <!-- Hero Section -->
@@ -1824,21 +1823,25 @@
 
     var baseZ = 8;
     var bgMode = false, swayTarget = 0, curSway = 0;
+    var _lastFrame = -1000, _frameMs = 1000 / 30;   // cap render to ~30fps (much lighter, still smooth)
 
-    function loop(){
+    function loop(ts){
       if (!running) return;
       requestAnimationFrame(loop);
-      t += 0.016;
-      driftYaw += 0.0022;
+      ts = ts || 0;
+      if (ts - _lastFrame < _frameMs) return;        // frame-rate cap
+      _lastFrame = ts;
+      t += 0.033;
+      driftYaw += 0.0044;
       if (bgMode){
         // Background: auto-rotate only, ease out any residual drag/parallax, sway side to side
-        curYaw   += (0 - curYaw)   * 0.05;
-        curPitch += (0 - curPitch) * 0.05;
-        curSway  += (swayTarget - curSway) * 0.04;
+        curYaw   += (0 - curYaw)   * 0.09;
+        curPitch += (0 - curPitch) * 0.09;
+        curSway  += (swayTarget - curSway) * 0.07;
       } else {
-        curYaw   += ((tYaw + dYaw) - curYaw) * 0.08;
-        curPitch += ((tPitch + dPitch) - curPitch) * 0.08;
-        curSway  += (0 - curSway) * 0.1;
+        curYaw   += ((tYaw + dYaw) - curYaw) * 0.15;
+        curPitch += ((tPitch + dPitch) - curPitch) * 0.15;
+        curSway  += (0 - curSway) * 0.18;
       }
       group.rotation.y = driftYaw + curYaw;
       group.rotation.x = curPitch;
@@ -1892,7 +1895,7 @@
       } else {
         canvas.classList.remove('bg-mode');
         wrap.insertBefore(canvas, wrap.firstChild);    // back into the hero column
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.25));
         var w = wrap.clientWidth || 1;
         camera.aspect = w / 420;
         camera.position.set(0, 0, baseZ);
@@ -2618,6 +2621,23 @@
       });
     }
     apply(initial);
+  })();
+  </script>
+  <script>
+  // ===== Move the language selector into the mobile drawer on small screens =====
+  (function(){
+    var wrap = document.querySelector('.lang-wrap');
+    var slot = document.getElementById('drawerLangSlot');
+    var toggle = document.getElementById('drawerOpenBtn');
+    var header = document.querySelector('.header-container');
+    if (!wrap || !slot || !header || !toggle) return;
+    var mq = window.matchMedia('(max-width: 767px)');
+    function place(){
+      if (mq.matches){ if (wrap.parentElement !== slot) slot.appendChild(wrap); }
+      else { if (wrap.parentElement !== header) header.insertBefore(wrap, toggle); }
+    }
+    place();
+    if (mq.addEventListener) mq.addEventListener('change', place); else if (mq.addListener) mq.addListener(place);
   })();
   </script>
   <script>
