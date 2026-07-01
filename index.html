@@ -201,6 +201,7 @@
       background-color: transparent;
       color: var(--accent);
       position: relative;
+      isolation: isolate; /* contain the ::before fill so it can't hide behind an opaque parent (e.g. the contact console) */
     }
 
     .btn-tech::before {
