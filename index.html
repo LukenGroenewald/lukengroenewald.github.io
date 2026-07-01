@@ -1125,6 +1125,38 @@
     .drawer-lang { margin-top: 2rem; }
     .drawer-lang .lang-wrap { margin: 0; width: 100%; gap: 0.6rem; }
     .drawer-lang .lang-select { max-width: 100%; width: 100%; font-size: 0.85rem; padding: 0.7rem 0.6rem; }
+
+    /* First-visit language chooser */
+    .lang-modal {
+      position: fixed; inset: 0; z-index: 2500;
+      background: rgba(6, 7, 9, 0.94);
+      -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center; padding: 1.5rem;
+      opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+    }
+    .lang-modal.open { opacity: 1; pointer-events: auto; }
+    .lang-modal-card {
+      width: 100%; max-width: 620px; max-height: 88vh; overflow-y: auto;
+      background: var(--surface); border: 1px dashed rgba(255, 255, 255, 0.12); padding: 2.25rem;
+    }
+    .lang-modal-title { font-family: var(--font-serif); font-weight: 300; font-size: 1.9rem; line-height: 1.1; margin-bottom: 0.4rem; }
+    .lang-modal-title span { color: var(--accent); font-style: italic; }
+    .lang-modal-sub { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 1.5rem; }
+    .lang-modal-group { font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-dim); margin: 1.25rem 0 0.6rem; }
+    .lang-modal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(115px, 1fr)); gap: 0.5rem; }
+    .lang-opt {
+      font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-main);
+      background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0.6rem 0.5rem; cursor: pointer; text-align: center;
+      transition: border-color 0.2s, background 0.2s, color 0.2s;
+    }
+    .lang-opt:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+    .lang-modal-skip {
+      display: inline-block; margin-top: 1.75rem; font-family: var(--font-mono); font-size: 0.7rem;
+      letter-spacing: 0.05em; color: var(--text-muted); cursor: pointer;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.2); padding-bottom: 2px;
+    }
+    .lang-modal-skip:hover { color: var(--accent); border-color: var(--accent); }
   </style>
 </head>
 <body>
@@ -1950,11 +1982,14 @@
     var seen = false; try { seen = !!localStorage.getItem(KEY); } catch(e){}
 
     function reveal(){ if (canvas) canvas.classList.add('booted'); }
+    // Signal that the first-visit boot has resolved, so the language chooser can appear.
+    function signalFirstVisit(){ window.__giBooted = true; try { document.dispatchEvent(new CustomEvent('gi:booted')); } catch(e){} }
 
     // Repeat visit, reduced motion, or overlay missing: skip the show
     if (!overlay || reduce || seen){
       if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
       reveal();
+      if (!seen) signalFirstVisit();   // first visit but no intro (e.g. reduced motion) — still prompt for language
       return;
     }
 
@@ -1980,7 +2015,7 @@
       document.body.style.overflow = '';
       reveal();
       overlay.classList.add('done');
-      setTimeout(function(){ if (overlay.parentNode) overlay.parentNode.removeChild(overlay); }, 750);
+      setTimeout(function(){ if (overlay.parentNode) overlay.parentNode.removeChild(overlay); signalFirstVisit(); }, 750);
     }
     if (skipBtn) skipBtn.addEventListener('click', finish);
 
@@ -1996,6 +2031,55 @@
     }, 420);
 
     setTimeout(finish, 5500); // safety auto-complete
+  })();
+  </script>
+  <script>
+  // ===== First-visit language chooser (appears once, after the intro) =====
+  (function(){
+    var PKEY = 'gi_lang_prompted';
+    try { if (localStorage.getItem(PKEY)) return; } catch(e){}  // only ever prompt once
+
+    var sa = [['en','English'],['af','Afrikaans'],['zu','isiZulu'],['xh','isiXhosa'],['nr','isiNdebele'],['nso','Sepedi'],['st','Sesotho'],['tn','Setswana'],['ss','siSwati'],['ve','Tshivenḓa'],['ts','Xitsonga']];
+    var intl = [['pt','Português'],['fr','Français'],['es','Español'],['de','Deutsch'],['nl','Nederlands'],['it','Italiano'],['ru','Русский'],['zh','中文'],['sw','Kiswahili']];
+    var modal = null;
+
+    function choose(lang){
+      try { localStorage.setItem(PKEY, '1'); } catch(e){}
+      if (typeof window.__giSetLang === 'function') window.__giSetLang(lang);
+      if (modal){ modal.classList.remove('open'); document.body.style.overflow = ''; setTimeout(function(){ if (modal.parentNode) modal.parentNode.removeChild(modal); }, 400); }
+    }
+
+    function build(){
+      modal = document.createElement('div'); modal.className = 'lang-modal';
+      var card = document.createElement('div'); card.className = 'lang-modal-card';
+      card.innerHTML =
+        '<div class="lang-modal-title">Select your <span>language</span></div>' +
+        '<div class="lang-modal-sub">Kies jou taal · Khetha ulwimi · Kgetha leleme · Выберите язык · 选择语言</div>' +
+        '<div class="lang-modal-group">South Africa</div><div class="lang-modal-grid" data-g="sa"></div>' +
+        '<div class="lang-modal-group">International</div><div class="lang-modal-grid" data-g="intl"></div>' +
+        '<div class="lang-modal-skip">Continue in English &rsaquo;</div>';
+      modal.appendChild(card); document.body.appendChild(modal);
+      function fill(g, arr){
+        var grid = card.querySelector('[data-g="' + g + '"]');
+        arr.forEach(function(o){
+          var b = document.createElement('div'); b.className = 'lang-opt'; b.textContent = o[1];
+          b.addEventListener('click', function(){ choose(o[0]); });
+          grid.appendChild(b);
+        });
+      }
+      fill('sa', sa); fill('intl', intl);
+      card.querySelector('.lang-modal-skip').addEventListener('click', function(){ choose('en'); });
+    }
+
+    function show(){
+      try { if (localStorage.getItem(PKEY)) return; } catch(e){}
+      if (modal) return;
+      build();
+      setTimeout(function(){ if (modal){ modal.classList.add('open'); document.body.style.overflow = 'hidden'; } }, 30);
+    }
+
+    if (window.__giBooted) show();
+    else document.addEventListener('gi:booted', show, { once: true });
   })();
   </script>
   <script>
@@ -2620,6 +2704,8 @@
         apply(l);
       });
     }
+    // Let the first-visit language chooser (and anything else) set the language
+    window.__giSetLang = function(l){ if (sel) sel.value = l; try { localStorage.setItem(STORE, l); } catch(e){} apply(l); };
     apply(initial);
   })();
   </script>
