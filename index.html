@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Groenewal Incorporate | Custom Software Engineering &amp; Automation</title>
-  <meta name="description" content="Groenewal Incorporate structures premium custom-compiled digital assets, high-performance web applications, and AI integrations." />
+  <title>Groenewald Incorporate | Custom Software Engineering &amp; Automation</title>
+  <meta name="description" content="Groenewald Incorporate structures premium custom-compiled digital assets, high-performance web applications, and AI integrations." />
   
   <!-- Google Fonts: Cormorant Garamond & Space Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1023,9 +1023,67 @@
     .motion-ok .showcase-grid:hover .showcase-card:hover {
       transform: scale(1.015) translateZ(20px);
     }
+
+    /* Interactive 3D card tilt + glare */
+    .motion-ok .blueprint-card, .motion-ok .diagnostics-panel {
+      transition: transform 0.18s ease, box-shadow 0.3s ease;
+      transform-style: preserve-3d; will-change: transform;
+    }
+    .tilt-glare {
+      position: absolute; inset: 0; pointer-events: none; z-index: 9;
+      opacity: 0; transition: opacity 0.3s ease;
+      background: radial-gradient(circle at var(--gx,50%) var(--gy,50%), rgba(34,211,238,0.14), transparent 55%);
+    }
+    .motion-ok .blueprint-card:hover .tilt-glare,
+    .motion-ok .diagnostics-panel:hover .tilt-glare { opacity: 1; }
+
+    /* Cinematic boot overlay */
+    .boot-overlay {
+      position: fixed; inset: 0; z-index: 3000;
+      background: var(--bg);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      transition: opacity 0.7s ease;
+    }
+    .boot-overlay.done { opacity: 0; pointer-events: none; }
+    .boot-overlay::before {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(circle at 50% 40%, rgba(34,211,238,0.10), transparent 60%),
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px) 0 0 / 100% 3px;
+    }
+    .boot-inner { width: min(440px, 82vw); text-align: center; position: relative; z-index: 1; }
+    .boot-brand {
+      font-family: var(--font-serif); font-weight: 300; font-size: clamp(1.4rem, 4vw, 2rem);
+      letter-spacing: 0.04em; color: var(--text-main); margin-bottom: 1.4rem;
+    }
+    .boot-brand b { color: var(--accent); font-weight: 400; }
+    .boot-status {
+      font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.22em;
+      color: var(--accent); margin-bottom: 1.1rem;
+    }
+    .boot-status::after { content: '_'; animation: blink 1s steps(1) infinite; }
+    .boot-bar { width: 100%; height: 2px; background: rgba(255,255,255,0.08); overflow: hidden; }
+    .boot-bar-fill { width: 0%; height: 100%; background: var(--accent); box-shadow: 0 0 12px var(--accent); transition: width 0.18s linear; }
+    .boot-log {
+      margin-top: 1.3rem; min-height: 5rem; text-align: left;
+      font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.04em; color: var(--text-dim);
+    }
+    .boot-log div { animation: bootLogIn 0.35s ease forwards; opacity: 0; }
+    @keyframes bootLogIn { to { opacity: 1; } }
   </style>
 </head>
 <body>
+
+  <!-- Cinematic Boot Overlay (first visit) -->
+  <div class="boot-overlay" id="bootOverlay">
+    <div class="boot-inner">
+      <div class="boot-brand">GROENEWALD <b>INCORPORATE</b></div>
+      <div class="boot-status" id="bootStatus">INITIALIZING SYSTEM</div>
+      <div class="boot-bar"><div class="boot-bar-fill" id="bootBarFill"></div></div>
+      <div class="boot-log" id="bootLog"></div>
+    </div>
+    <div class="boot-skip" id="bootSkipBtn">Skip &rsaquo;</div>
+  </div>
 
   <!-- Technical Background Grid -->
   <div class="blueprint-grid"></div>
@@ -1042,7 +1100,7 @@
   <header class="header" id="header">
     <div class="container header-container">
       <a href="#home" class="brand-serif">
-        Groenewal Incorporate <span>SYS_V1</span>
+        Groenewald Incorporate <span>SYS_V1</span>
       </a>
 
       <nav class="nav-links">
@@ -1068,7 +1126,7 @@
   <div class="mobile-menu-drawer" id="menuDrawer">
     <div class="drawer-top">
       <div class="brand-serif">
-        Groenewal Incorporate <span>SYS</span>
+        Groenewald Incorporate <span>SYS</span>
       </div>
       <button class="drawer-close" id="drawerCloseBtn" aria-label="Close navigation">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -1111,7 +1169,7 @@
             <canvas id="heroCanvas" aria-hidden="true"></canvas>
             <div class="hero-fallback" id="heroFallback">
               <!-- Static fallback: simplified construct, shown if WebGL/reduced-motion -->
-              <svg width="220" height="220" viewBox="0 0 220 220" role="img" aria-label="Groenewal system construct">
+              <svg width="220" height="220" viewBox="0 0 220 220" role="img" aria-label="Groenewald system construct">
                 <polygon points="110,20 190,65 190,155 110,200 30,155 30,65" fill="none" stroke="#22D3EE" stroke-width="1.5" opacity="0.85"/>
                 <polygon points="110,55 160,82 160,138 110,165 60,138 60,82" fill="none" stroke="#22D3EE" stroke-width="1" opacity="0.4"/>
                 <circle cx="110" cy="110" r="16" fill="#0AB4D6" opacity="0.7"/>
@@ -1402,7 +1460,7 @@
   <footer class="footer">
     <div class="container">
       <div class="footer-copyright">
-        &copy; 2026 Groenewal Incorporate. South Africa. All structures encrypted.
+        &copy; 2026 Groenewald Incorporate. South Africa. All structures encrypted.
       </div>
       <div class="footer-links">
         <a href="https://github.com/LukenGroenewald" class="footer-link" target="_blank">GitHub</a>
@@ -1548,7 +1606,7 @@
     var W = wrap.clientWidth, H = canvas.clientHeight || 420;
     var scene = new THREE.Scene();
     var camera = new THREE.PerspectiveCamera(45, W/H, 0.1, 100);
-    camera.position.set(0, 0, 6);
+    camera.position.set(0, 0, 8);
 
     var renderer;
     try {
@@ -1590,7 +1648,7 @@
     var lineMat = new THREE.LineBasicMaterial({ color: 0x22D3EE, transparent: true, opacity: 0.18 });
     for (var i = 0; i < 5; i++){
       var n = new THREE.Group();
-      var ang = (i/5) * Math.PI * 2, rad = 2.7 + (i % 2) * 0.5, depth = (i - 2) * 0.55;
+      var ang = (i/5) * Math.PI * 2, rad = 2.0 + (i % 2) * 0.3, depth = (i - 2) * 0.5;
       n.userData = { ang: ang, rad: rad, depth: depth, speed: 0.15 + i * 0.03 };
       n.add(new THREE.Mesh(new THREE.SphereGeometry(0.10, 16, 16), new THREE.MeshBasicMaterial({ color: 0x22D3EE })));
       var halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: nodeGlowTex, blending: THREE.AdditiveBlending, transparent: true, depthWrite: false }));
@@ -1644,7 +1702,10 @@
       var y = (-_proj.y * 0.5 + 0.5) * r.height;
       labelEl.style.left = x + 'px';
       labelEl.style.top = (y - 16) + 'px';
-      return inFront;
+      // Hide the label if the node projects outside the canvas bounds (with margin for label width)
+      var mx = 46, my = 12;
+      var inBounds = x > mx && x < (r.width - mx) && y > my && y < (r.height - my);
+      return inFront && inBounds;
     }
 
     function loop(){
@@ -1677,7 +1738,7 @@
     }
     if (reduceMotion){
       group.updateMatrixWorld();
-      for (var s = 0; s < nodes.length; s++){ projectLabel(nodes[s], HERO.labels[s]); HERO.labels[s].classList.add('show'); }
+      for (var s = 0; s < nodes.length; s++){ HERO.labels[s].classList.toggle('show', projectLabel(nodes[s], HERO.labels[s])); }
       renderer.render(scene, camera);
       running = false;                  // no animation loop
       HERO.setRunning = function(){};   // neutralize IntersectionObserver resume so reduced-motion stays static
@@ -1686,7 +1747,7 @@
     }
 
     // --- scroll director: dolly the camera as hero leaves ---
-    var baseZ = 6;
+    var baseZ = 8;
     window.addEventListener('scroll', function(){
       var r = wrap.getBoundingClientRect();
       var progress = Math.min(Math.max(-r.top / (r.height || 1), 0), 1); // 0 at top, 1 when scrolled one panel past
@@ -1715,58 +1776,121 @@
   </script>
 
   <script>
+  // ===== Cinematic boot overlay (first-visit, skippable, reduced-motion aware) =====
   (function(){
-    var KEY = 'gi_booted_v1';
+    var KEY = 'gi_booted_v2';
     var canvas = document.getElementById('heroCanvas');
-    var meta = document.querySelector('.hero-meta');
+    var overlay = document.getElementById('bootOverlay');
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var fullText = meta ? meta.textContent : '';
+    var seen = false; try { seen = !!localStorage.getItem(KEY); } catch(e){}
 
-    function finishInstant(){
-      if (canvas) canvas.classList.add('booted');
-      if (meta) meta.textContent = fullText;
+    function reveal(){ if (canvas) canvas.classList.add('booted'); }
+
+    // Repeat visit, reduced motion, or overlay missing: skip the show
+    if (!overlay || reduce || seen){
+      if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+      reveal();
+      return;
     }
 
-    // Repeat visit or reduced motion: skip the show
-    var seen = false;
-    try { seen = !!localStorage.getItem(KEY); } catch(e){}
-    if (reduce || seen){ finishInstant(); return; }
+    document.body.style.overflow = 'hidden'; // lock scroll during intro
+    var fill = document.getElementById('bootBarFill');
+    var statusEl = document.getElementById('bootStatus');
+    var logEl = document.getElementById('bootLog');
+    var skipBtn = document.getElementById('bootSkipBtn');
 
-    // First visit: play it
-    if (meta) meta.textContent = '';
-    var skip = document.createElement('div');
-    skip.className = 'boot-skip'; skip.textContent = 'Skip intro';
-    document.body.appendChild(skip);
+    var logs = [
+      '> compiling shell geometry...',
+      '> linking node topology...',
+      '> calibrating core light source...',
+      '> establishing render loop...',
+      '> system online.'
+    ];
+    var done = false, li = 0, pct = 0, logTimer, barTimer;
 
-    var done = false;
     function finish(){
       if (done) return; done = true;
       try { localStorage.setItem(KEY, '1'); } catch(e){}
-      if (canvas) canvas.classList.add('booted');
-      if (meta){ meta.classList.remove('boot-typing'); meta.textContent = fullText; }
-      if (skip.parentNode) skip.parentNode.removeChild(skip);
+      clearInterval(logTimer); clearInterval(barTimer);
+      document.body.style.overflow = '';
+      reveal();
+      overlay.classList.add('done');
+      setTimeout(function(){ if (overlay.parentNode) overlay.parentNode.removeChild(overlay); }, 750);
     }
-    skip.addEventListener('click', finish);
+    if (skipBtn) skipBtn.addEventListener('click', finish);
 
-    // Sequence: fade construct in, then type the meta line
-    setTimeout(function(){ if (canvas) canvas.classList.add('booted'); }, 400);
-    var idx = 0;
-    if (meta) meta.classList.add('boot-typing');
-    var typer = setInterval(function(){
-      if (done){ clearInterval(typer); return; }
-      idx++;
-      if (meta) meta.textContent = fullText.slice(0, idx);
-      if (idx >= fullText.length){ clearInterval(typer); setTimeout(finish, 300); }
+    barTimer = setInterval(function(){
+      pct = Math.min(100, pct + 2.5);
+      if (fill) fill.style.width = pct + '%';
+      if (pct >= 100){ clearInterval(barTimer); if (statusEl) statusEl.textContent = 'SYSTEM ONLINE'; setTimeout(finish, 500); }
     }, 45);
 
-    // Safety auto-complete
-    setTimeout(finish, 4000);
+    logTimer = setInterval(function(){
+      if (li < logs.length && logEl){ var d = document.createElement('div'); d.textContent = logs[li]; logEl.appendChild(d); li++; }
+      else clearInterval(logTimer);
+    }, 420);
+
+    setTimeout(finish, 5500); // safety auto-complete
   })();
   </script>
   <script>
+  // ===== motion-ok flag (gates all cinematic motion for reduced-motion users) =====
   (function(){
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!reduce) document.body.classList.add('motion-ok');
+  })();
+  </script>
+  <script>
+  // ===== Interactive 3D card tilt (services + showcase + diagnostics) =====
+  (function(){
+    if (!document.body.classList.contains('motion-ok')) return;
+    if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) return; // skip touch devices
+    var cards = document.querySelectorAll('.blueprint-card, .diagnostics-panel');
+    Array.prototype.forEach.call(cards, function(card){
+      var glare = document.createElement('div'); glare.className = 'tilt-glare'; card.appendChild(glare);
+      card.addEventListener('mousemove', function(e){
+        var r = card.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+        var rx = (py - 0.5) * -7, ry = (px - 0.5) * 9;
+        card.style.transform = 'perspective(900px) rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg) translateZ(8px)';
+        glare.style.setProperty('--gx', (px*100).toFixed(1) + '%');
+        glare.style.setProperty('--gy', (py*100).toFixed(1) + '%');
+      });
+      card.addEventListener('mouseleave', function(){ card.style.transform = ''; });
+    });
+  })();
+  </script>
+  <script>
+  // ===== Telemetry count-up on scroll-into-view =====
+  (function(){
+    var vals = document.querySelectorAll('.telemetry-val');
+    if (!vals.length) return;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function run(el){
+      var m = el.textContent.trim().match(/^(\d+)(.*)$/);
+      if (!m){ return; }
+      var target = parseInt(m[1], 10), suffix = m[2] || '';
+      if (reduce){ el.textContent = target + suffix; return; }
+      var dur = 1200, start = null;
+      function step(ts){ if (!start) start = ts; var p = Math.min((ts-start)/dur, 1); var e = 1 - Math.pow(1-p, 3); el.textContent = Math.round(target*e) + suffix; if (p < 1) requestAnimationFrame(step); }
+      requestAnimationFrame(step);
+    }
+    if ('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(en){ if (en.isIntersecting){ run(en.target); io.unobserve(en.target); } });
+      }, { threshold: 0.5 });
+      Array.prototype.forEach.call(vals, function(v){ io.observe(v); });
+    } else { Array.prototype.forEach.call(vals, run); }
+  })();
+  </script>
+  <script>
+  // ===== Subtle background grid parallax on scroll (depth) =====
+  (function(){
+    var grid = document.querySelector('.blueprint-grid');
+    if (!grid) return;
+    window.addEventListener('scroll', function(){
+      grid.style.backgroundPosition = '0px ' + (-window.scrollY * 0.18).toFixed(1) + 'px';
+    }, { passive: true });
   })();
   </script>
 </body>
