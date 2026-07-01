@@ -998,6 +998,14 @@
     .boot-typing::after { content: '_'; color: var(--accent); animation: blink 1s steps(1) infinite; }
     #heroCanvas { opacity: 0; transition: opacity 0.9s ease; }
     #heroCanvas.booted { opacity: 1; }
+    /* Background mode: construct detaches into a fixed, non-interactive backdrop */
+    #heroCanvas.bg-mode {
+      position: fixed; inset: 0;
+      width: 100vw !important; height: 100vh !important;
+      z-index: -1; opacity: 0.5;
+      transition: opacity 0.8s ease;
+      pointer-events: none;
+    }
     .boot-skip {
       position: fixed; bottom: 1.25rem; right: 1.25rem; z-index: 1200;
       font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase;
@@ -1708,15 +1716,27 @@
       return inFront && inBounds;
     }
 
+    var baseZ = 8;
+    var bgMode = false, swayTarget = 0, curSway = 0;
+
     function loop(){
       if (!running) return;
       requestAnimationFrame(loop);
       t += 0.016;
       driftYaw += 0.0022;
-      curYaw   += ((tYaw + dYaw) - curYaw) * 0.08;
-      curPitch += ((tPitch + dPitch) - curPitch) * 0.08;
+      if (bgMode){
+        // Background: auto-rotate only, ease out any residual drag/parallax, sway side to side
+        curYaw   += (0 - curYaw)   * 0.05;
+        curPitch += (0 - curPitch) * 0.05;
+        curSway  += (swayTarget - curSway) * 0.04;
+      } else {
+        curYaw   += ((tYaw + dYaw) - curYaw) * 0.08;
+        curPitch += ((tPitch + dPitch) - curPitch) * 0.08;
+        curSway  += (0 - curSway) * 0.1;
+      }
       group.rotation.y = driftYaw + curYaw;
       group.rotation.x = curPitch;
+      group.position.x = curSway;
       coreHalo.scale.setScalar(3.2 + Math.sin(t*2)*0.3);
       core.scale.setScalar(1 + Math.sin(t*2)*0.08);
       for (var k = 0; k < nodes.length; k++){
@@ -1730,9 +1750,12 @@
         pos.needsUpdate = true;
       }
       group.updateMatrixWorld();
-      for (var m = 0; m < nodes.length; m++){
-        var inFront = projectLabel(nodes[m], HERO.labels[m]);
-        HERO.labels[m].classList.toggle('show', inFront);
+      if (bgMode){
+        for (var b = 0; b < nodes.length; b++){ HERO.labels[b].classList.remove('show'); }
+      } else {
+        for (var m = 0; m < nodes.length; m++){
+          HERO.labels[m].classList.toggle('show', projectLabel(nodes[m], HERO.labels[m]));
+        }
       }
       renderer.render(scene, camera);
     }
@@ -1741,35 +1764,60 @@
       for (var s = 0; s < nodes.length; s++){ HERO.labels[s].classList.toggle('show', projectLabel(nodes[s], HERO.labels[s])); }
       renderer.render(scene, camera);
       running = false;                  // no animation loop
-      HERO.setRunning = function(){};   // neutralize IntersectionObserver resume so reduced-motion stays static
+      HERO.setRunning = function(){};   // neutralize resume so reduced-motion stays static
     } else {
       loop();
     }
 
-    // --- scroll director: dolly the camera as hero leaves ---
-    var baseZ = 8;
-    window.addEventListener('scroll', function(){
-      var r = wrap.getBoundingClientRect();
-      var progress = Math.min(Math.max(-r.top / (r.height || 1), 0), 1); // 0 at top, 1 when scrolled one panel past
-      camera.position.z = baseZ + progress * 3;       // dolly back
-      camera.position.y = progress * 0.8;             // drift up
-      camera.lookAt(0, 0, 0);
-    }, { passive: true });
-
-    // --- pause render when offscreen ---
-    if ('IntersectionObserver' in window){
-      var io = new IntersectionObserver(function(entries){
-        entries.forEach(function(en){
-          if (en.isIntersecting){ if (HERO.setRunning) HERO.setRunning(true); }
-          else { if (HERO.setRunning) HERO.setRunning(false); }
-        });
-      }, { threshold: 0.01 });
-      io.observe(wrap);
+    // --- Background mode: once the hero scrolls away, the construct detaches into
+    //     a fixed, non-interactive backdrop that keeps rotating and sways sideways.
+    //     It must be reparented to <body> because the hero column has a CSS transform
+    //     (which would otherwise trap position:fixed inside it). ---
+    function setBgMode(on){
+      if (on === bgMode) return;
+      bgMode = on;
+      if (on){
+        document.body.appendChild(canvas);            // out of the transformed hero
+        canvas.classList.add('bg-mode');
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.position.set(0, 0, 9.5);
+        renderer.setSize(window.innerWidth, window.innerHeight, false);
+      } else {
+        canvas.classList.remove('bg-mode');
+        wrap.insertBefore(canvas, wrap.firstChild);    // back into the hero column
+        var w = wrap.clientWidth || 1;
+        camera.aspect = w / 420;
+        camera.position.set(0, 0, baseZ);
+        renderer.setSize(w, 420, false);
+      }
+      camera.updateProjectionMatrix();
     }
 
+    if (!reduceMotion){
+      window.addEventListener('scroll', function(){
+        var homeEl = document.getElementById('home');
+        var hb = homeEl ? homeEl.getBoundingClientRect().bottom : window.innerHeight;
+        setBgMode(hb < window.innerHeight * 0.25);          // engage once the hero has scrolled off
+        swayTarget = Math.sin(window.scrollY * 0.0016) * 2.6; // side-to-side drift with scroll depth
+      }, { passive: true });
+    }
+
+    // --- Pause rendering only when the tab is hidden (the construct is now a
+    //     persistent background, so it renders whenever the page is visible) ---
+    document.addEventListener('visibilitychange', function(){
+      if (HERO.setRunning) HERO.setRunning(!document.hidden);
+    });
+
     window.addEventListener('resize', function(){
-      var w = wrap.clientWidth, h = canvas.clientHeight || 420;
-      camera.aspect = w/h; camera.updateProjectionMatrix(); renderer.setSize(w, h, false);
+      if (bgMode){
+        camera.aspect = window.innerWidth / window.innerHeight;
+        renderer.setSize(window.innerWidth, window.innerHeight, false);
+      } else {
+        var w = wrap.clientWidth || 1;
+        camera.aspect = w / 420;
+        renderer.setSize(w, 420, false);
+      }
+      camera.updateProjectionMatrix();
       renderer.render(scene, camera);
     });
   })();
