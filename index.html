@@ -1097,6 +1097,33 @@
     }
     .boot-log div { animation: bootLogIn 0.35s ease forwards; opacity: 0; }
     @keyframes bootLogIn { to { opacity: 1; } }
+
+    /* Language selector */
+    .lang-wrap { display: flex; align-items: center; gap: 0.4rem; margin-left: 1.5rem; }
+    .lang-globe { color: var(--text-muted); flex-shrink: 0; }
+    .lang-select {
+      background: rgba(6, 7, 9, 0.6);
+      color: var(--accent);
+      border: 1px dashed rgba(255, 255, 255, 0.15);
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.4rem 0.5rem;
+      cursor: pointer;
+      border-radius: 0;
+      outline: none;
+      max-width: 160px;
+      transition: border-color 0.2s;
+    }
+    .lang-select:hover, .lang-select:focus { border-color: var(--accent); }
+    .lang-select option, .lang-select optgroup {
+      background: #0E1015; color: var(--text-main); text-transform: none; letter-spacing: normal;
+    }
+    @media (max-width: 1023px) {
+      .lang-wrap { margin-left: auto; margin-right: 0.6rem; }
+      .lang-select { max-width: 120px; font-size: 0.6rem; padding: 0.35rem 0.4rem; }
+    }
   </style>
 </head>
 <body>
@@ -1131,13 +1158,66 @@
       </a>
 
       <nav class="nav-links">
-        <a href="#home" class="nav-item active">Home</a>
-        <a href="#services" class="nav-item">Services</a>
-        <a href="#portfolio" class="nav-item">Showcase</a>
-        <a href="#advantage" class="nav-item">Method</a>
-        <a href="#contact" class="nav-item">Contact</a>
-        <a href="#contact" class="btn-tech btn-sm">Consult</a>
+        <a href="#home" class="nav-item active" data-i18n="nav.home">Home</a>
+        <a href="#services" class="nav-item" data-i18n="nav.services">Services</a>
+        <a href="#portfolio" class="nav-item" data-i18n="nav.showcase">Showcase</a>
+        <a href="#advantage" class="nav-item" data-i18n="nav.method">Method</a>
+        <a href="#contact" class="nav-item" data-i18n="nav.contact">Contact</a>
+        <a href="#contact" class="btn-tech btn-sm" data-i18n="nav.consult">Consult</a>
       </nav>
+
+      <div class="lang-wrap">
+        <svg class="lang-globe" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"></circle>
+          <path d="M3 12h18M12 3c2.5 2.5 3.5 6 3.5 9s-1 6.5-3.5 9c-2.5-2.5-3.5-6-3.5-9s1-6.5 3.5-9z"></path>
+        </svg>
+        <select class="lang-select" id="langSelect" aria-label="Select language">
+          <option value="en">English</option>
+          <optgroup label="South Africa">
+            <option value="af">Afrikaans</option>
+            <option value="zu">isiZulu</option>
+            <option value="xh">isiXhosa</option>
+            <option value="nr">isiNdebele</option>
+            <option value="nso">Sepedi</option>
+            <option value="st">Sesotho</option>
+            <option value="tn">Setswana</option>
+            <option value="ss">siSwati</option>
+            <option value="ve">Tshivenḓa</option>
+            <option value="ts">Xitsonga</option>
+          </optgroup>
+          <optgroup label="World">
+            <option value="zh">中文 (Chinese)</option>
+            <option value="es">Español</option>
+            <option value="hi">हिन्दी (Hindi)</option>
+            <option value="ar">العربية (Arabic)</option>
+            <option value="pt">Português</option>
+            <option value="bn">বাংলা (Bengali)</option>
+            <option value="ru">Русский (Russian)</option>
+            <option value="ur">اردو (Urdu)</option>
+            <option value="id">Bahasa Indonesia</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="ja">日本語 (Japanese)</option>
+            <option value="sw">Kiswahili</option>
+            <option value="mr">मराठी (Marathi)</option>
+            <option value="te">తెలుగు (Telugu)</option>
+            <option value="tr">Türkçe</option>
+            <option value="ta">தமிழ் (Tamil)</option>
+            <option value="vi">Tiếng Việt</option>
+            <option value="ko">한국어 (Korean)</option>
+            <option value="it">Italiano</option>
+            <option value="th">ไทย (Thai)</option>
+            <option value="gu">ગુજરાતી (Gujarati)</option>
+            <option value="fa">فارسی (Persian)</option>
+            <option value="pl">Polski</option>
+            <option value="uk">Українська (Ukrainian)</option>
+            <option value="nl">Nederlands</option>
+            <option value="el">Ελληνικά (Greek)</option>
+            <option value="ro">Română</option>
+            <option value="ms">Bahasa Melayu</option>
+          </optgroup>
+        </select>
+      </div>
 
       <button class="nav-toggle" id="drawerOpenBtn" aria-label="Open navigation">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -1164,11 +1244,11 @@
     </div>
     
     <nav class="drawer-list">
-      <a href="#home" class="drawer-nav-item" onclick="toggleMenu()">Home</a>
-      <a href="#services" class="drawer-nav-item" onclick="toggleMenu()">Services</a>
-      <a href="#portfolio" class="drawer-nav-item" onclick="toggleMenu()">Showcase</a>
-      <a href="#advantage" class="drawer-nav-item" onclick="toggleMenu()">Method</a>
-      <a href="#contact" class="drawer-nav-item" onclick="toggleMenu()">Contact</a>
+      <a href="#home" class="drawer-nav-item" onclick="toggleMenu()" data-i18n="nav.home">Home</a>
+      <a href="#services" class="drawer-nav-item" onclick="toggleMenu()" data-i18n="nav.services">Services</a>
+      <a href="#portfolio" class="drawer-nav-item" onclick="toggleMenu()" data-i18n="nav.showcase">Showcase</a>
+      <a href="#advantage" class="drawer-nav-item" onclick="toggleMenu()" data-i18n="nav.method">Method</a>
+      <a href="#contact" class="drawer-nav-item" onclick="toggleMenu()" data-i18n="nav.contact">Contact</a>
     </nav>
   </div>
 
@@ -1177,11 +1257,11 @@
     <div class="container hero-split">
       <div class="hero-text reveal-on-scroll">
         <span class="hero-meta">ESTABLISHED 2026 / CAPE TOWN</span>
-        <h1 class="hero-title">Precision-Engineered <span>Digital Assets.</span></h1>
-        <p class="hero-desc">We compile high-performance custom web applications, structured database integrations, and automated pipelines for professional services and local firms in South Africa.</p>
+        <h1 class="hero-title" data-i18n-html="hero.title">Precision-Engineered <span>Digital Assets.</span></h1>
+        <p class="hero-desc" data-i18n="hero.desc">We compile high-performance custom web applications, structured database integrations, and automated pipelines for professional services and local firms in South Africa.</p>
         <div class="hero-actions">
-          <a href="#portfolio" class="btn-tech">Open Showcase</a>
-          <a href="#contact" class="btn-tech btn-tech-secondary">Initial Briefing</a>
+          <a href="#portfolio" class="btn-tech" data-i18n="hero.cta1">Open Showcase</a>
+          <a href="#contact" class="btn-tech btn-tech-secondary" data-i18n="hero.cta2">Initial Briefing</a>
         </div>
       </div>
 
@@ -1245,7 +1325,7 @@
     <div class="container">
       <div class="section-header reveal-on-scroll">
         <span class="section-code">SERVICE_REGISTRY_0x92</span>
-        <h2 class="section-title">Technical <span>Capabilities.</span></h2>
+        <h2 class="section-title" data-i18n-html="services.title">Technical <span>Capabilities.</span></h2>
       </div>
 
       <div class="services-grid">
@@ -1256,8 +1336,8 @@
             <svg class="card-border-svg"><rect class="border-rect" x="1.5" y="1.5" width="99%" height="98%" rx="2" /></svg>
             
             <span class="service-tech-id">[CAPABILITY: FULL_STACK_DEV]</span>
-            <h3 class="service-title">Custom Web Platforms</h3>
-            <p class="service-desc">We compile responsive, high-performance user interfaces and custom client dashboards integrated with firewalls, authentication layers, and checkout gateways.</p>
+            <h3 class="service-title" data-i18n="svc1.title">Custom Web Platforms</h3>
+            <p class="service-desc" data-i18n="svc1.desc">We compile responsive, high-performance user interfaces and custom client dashboards integrated with firewalls, authentication layers, and checkout gateways.</p>
             
             <div class="service-metrics">
               <div class="service-metric-item"><span>Framework:</span> <span>Next.js 15, TypeScript</span></div>
@@ -1274,8 +1354,8 @@
             <svg class="card-border-svg"><rect class="border-rect" x="1.5" y="1.5" width="99%" height="98%" rx="2" /></svg>
             
             <span class="service-tech-id">[CAPABILITY: DATA_AUTOMATION]</span>
-            <h3 class="service-title">Algorithmic Pipelines</h3>
-            <p class="service-desc">We build automated Python backend systems that scrap directories, organize structured data, and interface directly with LLM inference engines (OpenRouter / OpenAI).</p>
+            <h3 class="service-title" data-i18n="svc2.title">Algorithmic Pipelines</h3>
+            <p class="service-desc" data-i18n="svc2.desc">We build automated Python backend systems that scrap directories, organize structured data, and interface directly with LLM inference engines (OpenRouter / OpenAI).</p>
             
             <div class="service-metrics">
               <div class="service-metric-item"><span>Languages:</span> <span>Python, Shell scripts</span></div>
@@ -1293,7 +1373,7 @@
     <div class="container">
       <div class="section-header reveal-on-scroll">
         <span class="section-code">SYSTEM_SHOWCASE_ASSETS</span>
-        <h2 class="section-title">Active <span>Deployments.</span></h2>
+        <h2 class="section-title" data-i18n-html="showcase.title">Active <span>Deployments.</span></h2>
       </div>
 
       <div class="showcase-grid">
@@ -1308,7 +1388,7 @@
             </div>
             
             <h3 class="showcase-title">Apex Legal &amp; Advisory</h3>
-            <p class="showcase-desc">A premium corporate commercial law firm web application featuring interactive practice modules, scroll depth rotations, and an advanced briefing calendar scheduler.</p>
+            <p class="showcase-desc" data-i18n="proj1.desc">A premium corporate commercial law firm web application featuring interactive practice modules, scroll depth rotations, and an advanced briefing calendar scheduler.</p>
             
             <div class="showcase-tech-list">
               <span class="showcase-tech-tag">HTML5</span>
@@ -1317,7 +1397,7 @@
             </div>
             
             <a href="https://apex-legal-concept.vercel.app/" class="showcase-link" target="_blank" rel="noopener">
-              Launch Live Instance
+              <span data-i18n="showcase.launch">Launch Live Instance</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <line x1="7" y1="17" x2="17" y2="7"></line>
                 <polyline points="7 7 17 7 17 17"></polyline>
@@ -1337,7 +1417,7 @@
             </div>
             
             <h3 class="showcase-title">Stack Burger Co.</h3>
-            <p class="showcase-desc">High-performance digital menu checkout. Features interactive burger configuration metrics, total cart calculation adjustments, and direct WhatsApp routing tags.</p>
+            <p class="showcase-desc" data-i18n="proj2.desc">High-performance digital menu checkout. Features interactive burger configuration metrics, total cart calculation adjustments, and direct WhatsApp routing tags.</p>
             
             <div class="showcase-tech-list">
               <span class="showcase-tech-tag">Dynamic Cart</span>
@@ -1346,7 +1426,7 @@
             </div>
             
             <a href="https://stackburgerco-demo.netlify.app/" class="showcase-link" target="_blank" rel="noopener">
-              Launch Live Instance
+              <span data-i18n="showcase.launch">Launch Live Instance</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <line x1="7" y1="17" x2="17" y2="7"></line>
                 <polyline points="7 7 17 7 17 17"></polyline>
@@ -1366,7 +1446,7 @@
             </div>
             
             <h3 class="showcase-title">Mark One Hair Design</h3>
-            <p class="showcase-desc">Minimalist, high-contrast local business branding for a hair salon in Strand, Cape Town. Optimized for swift load speeds and local maps integrations.</p>
+            <p class="showcase-desc" data-i18n="proj3.desc">Minimalist, high-contrast local business branding for a hair salon in Strand, Cape Town. Optimized for swift load speeds and local maps integrations.</p>
             
             <div class="showcase-tech-list">
               <span class="showcase-tech-tag">Light Theme</span>
@@ -1375,7 +1455,7 @@
             </div>
             
             <a href="https://mark-one-hair-design-demo.netlify.app/" class="showcase-link" target="_blank" rel="noopener">
-              Launch Live Instance
+              <span data-i18n="showcase.launch">Launch Live Instance</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <line x1="7" y1="17" x2="17" y2="7"></line>
                 <polyline points="7 7 17 7 17 17"></polyline>
@@ -1395,7 +1475,7 @@
             </div>
             
             <h3 class="showcase-title">The Dogfather</h3>
-            <p class="showcase-desc">Warm layout landing page prototype for a Somerset West pet boutique. Integrates client review nodes, operating hour tables, and click-to-dial triggers.</p>
+            <p class="showcase-desc" data-i18n="proj4.desc">Warm layout landing page prototype for a Somerset West pet boutique. Integrates client review nodes, operating hour tables, and click-to-dial triggers.</p>
             
             <div class="showcase-tech-list">
               <span class="showcase-tech-tag">Espresso Styling</span>
@@ -1404,7 +1484,7 @@
             </div>
             
             <a href="https://thedogfather-demo.netlify.app/" class="showcase-link" target="_blank" rel="noopener">
-              Launch Live Instance
+              <span data-i18n="showcase.launch">Launch Live Instance</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <line x1="7" y1="17" x2="17" y2="7"></line>
                 <polyline points="7 7 17 7 17 17"></polyline>
@@ -1421,9 +1501,9 @@
     <div class="container advantage-split">
       <div class="advantage-text reveal-on-scroll">
         <span class="section-code">OPERATIONAL_BLUEPRINT_LOGS</span>
-        <h3>The Async Architecture Advantage</h3>
-        <p>Traditional developers coordinate endless live meetings. We build asynchronously. You submit raw blueprints or text requirements, and we structure the code using advanced agentic AI architectures (Antigravity &amp; Claude Code) at 5x speed.</p>
-        <p>No billing surprises. Sprints are executed at fixed cost allocations. You retain total file ownership and Git repository directories directly upon code handover.</p>
+        <h3 data-i18n="adv.title">The Async Architecture Advantage</h3>
+        <p data-i18n="adv.p1">Traditional developers coordinate endless live meetings. We build asynchronously. You submit raw blueprints or text requirements, and we structure the code using advanced agentic AI architectures (Antigravity &amp; Claude Code) at 5x speed.</p>
+        <p data-i18n="adv.p2">No billing surprises. Sprints are executed at fixed cost allocations. You retain total file ownership and Git repository directories directly upon code handover.</p>
       </div>
 
       <div class="reveal-on-scroll delay-2">
@@ -1436,24 +1516,24 @@
           <div class="diagnostic-row">
             <div class="diagnostic-indicator"></div>
             <div class="diagnostic-info">
-              <div class="diagnostic-title">1. Monitored Code Compiles</div>
-              <div class="diagnostic-desc">No template boilerplate. Codebases compiled with lint validations.</div>
+              <div class="diagnostic-title" data-i18n="diag1.title">1. Monitored Code Compiles</div>
+              <div class="diagnostic-desc" data-i18n="diag1.desc">No template boilerplate. Codebases compiled with lint validations.</div>
             </div>
           </div>
 
           <div class="diagnostic-row">
             <div class="diagnostic-indicator"></div>
             <div class="diagnostic-info">
-              <div class="diagnostic-title">2. Asynchronous Sprints</div>
-              <div class="diagnostic-desc">Requirements tracked digitally. Instant updates to your staging environment.</div>
+              <div class="diagnostic-title" data-i18n="diag2.title">2. Asynchronous Sprints</div>
+              <div class="diagnostic-desc" data-i18n="diag2.desc">Requirements tracked digitally. Instant updates to your staging environment.</div>
             </div>
           </div>
 
           <div class="diagnostic-row">
             <div class="diagnostic-indicator"></div>
             <div class="diagnostic-info">
-              <div class="diagnostic-title">3. Absolute Code Sovereignty</div>
-              <div class="diagnostic-desc">No lock-in contracts. Complete clean HTML/CSS/JS or Next.js code handover.</div>
+              <div class="diagnostic-title" data-i18n="diag3.title">3. Absolute Code Sovereignty</div>
+              <div class="diagnostic-desc" data-i18n="diag3.desc">No lock-in contracts. Complete clean HTML/CSS/JS or Next.js code handover.</div>
             </div>
           </div>
         </div>
@@ -1466,18 +1546,18 @@
     <div class="container reveal-on-scroll">
       <div class="console-box">
         <span class="section-code" style="text-align: center; display: block;">ESTABLISH_REMOTE_CONN</span>
-        <h2 class="console-title">Initial Briefing Request</h2>
-        <p class="console-desc">Initiate a briefing for your custom digital asset. Submit requirements directly or request an estimate quote via secure mail.</p>
-        
+        <h2 class="console-title" data-i18n="contact.title">Initial Briefing Request</h2>
+        <p class="console-desc" data-i18n="contact.desc">Initiate a briefing for your custom digital asset. Submit requirements directly or request an estimate quote via secure mail.</p>
+
         <div class="console-details console-details-single">
           <div class="console-detail-item">
-            <span class="console-detail-tag">Secure Mail Endpoint</span>
+            <span class="console-detail-tag" data-i18n="contact.maillabel">Secure Mail Endpoint</span>
             <span class="console-detail-val">groenewald.incoporate@gmail.com</span>
           </div>
         </div>
 
         <div class="console-actions">
-          <a href="mailto:groenewald.incoporate@gmail.com" class="btn-tech">Establish Mail Briefing</a>
+          <a href="mailto:groenewald.incoporate@gmail.com" class="btn-tech" data-i18n="contact.cta">Establish Mail Briefing</a>
         </div>
       </div>
     </div>
@@ -1486,7 +1566,7 @@
   <!-- Footer -->
   <footer class="footer">
     <div class="container">
-      <div class="footer-copyright">
+      <div class="footer-copyright" data-i18n-html="footer.copyright">
         &copy; 2026 Groenewald Incorporate. South Africa. All structures encrypted.
       </div>
       <div class="footer-links">
@@ -1963,6 +2043,311 @@
       }, { threshold: 0.5 });
       Array.prototype.forEach.call(vals, function(v){ io.observe(v); });
     } else { Array.prototype.forEach.call(vals, run); }
+  })();
+  </script>
+  <script>
+  // ===== Language selector / i18n =====
+  // Hand-translated for: en, af, pt, zu, xh, fr, es, de, nl, it.
+  // Every other language in the selector falls back to English per key.
+  (function(){
+    var T = {
+      en: {
+        'nav.home':'Home','nav.services':'Services','nav.showcase':'Showcase','nav.method':'Method','nav.contact':'Contact','nav.consult':'Consult',
+        'hero.title':'Precision-Engineered <span>Digital Assets.</span>',
+        'hero.desc':'We compile high-performance custom web applications, structured database integrations, and automated pipelines for professional services and local firms in South Africa.',
+        'hero.cta1':'Open Showcase','hero.cta2':'Initial Briefing',
+        'services.title':'Technical <span>Capabilities.</span>',
+        'svc1.title':'Custom Web Platforms',
+        'svc1.desc':'We compile responsive, high-performance user interfaces and custom client dashboards integrated with firewalls, authentication layers, and checkout gateways.',
+        'svc2.title':'Algorithmic Pipelines',
+        'svc2.desc':'We build automated Python backend systems that scrape directories, organize structured data, and interface directly with LLM inference engines (OpenRouter / OpenAI).',
+        'showcase.title':'Active <span>Deployments.</span>',
+        'proj1.desc':'A premium corporate commercial law firm web application featuring interactive practice modules, scroll depth rotations, and an advanced briefing calendar scheduler.',
+        'proj2.desc':'High-performance digital menu checkout. Features interactive burger configuration metrics, total cart calculation adjustments, and direct WhatsApp routing tags.',
+        'proj3.desc':'Minimalist, high-contrast local business branding for a hair salon in Strand, Cape Town. Optimized for swift load speeds and local maps integrations.',
+        'proj4.desc':'Warm layout landing page prototype for a Somerset West pet boutique. Integrates client review nodes, operating hour tables, and click-to-dial triggers.',
+        'showcase.launch':'Launch Live Instance',
+        'adv.title':'The Async Architecture Advantage',
+        'adv.p1':'Traditional developers coordinate endless live meetings. We build asynchronously. You submit raw blueprints or text requirements, and we structure the code using advanced agentic AI architectures (Antigravity & Claude Code) at 5x speed.',
+        'adv.p2':'No billing surprises. Sprints are executed at fixed cost allocations. You retain total file ownership and Git repository directories directly upon code handover.',
+        'diag1.title':'1. Monitored Code Compiles','diag1.desc':'No template boilerplate. Codebases compiled with lint validations.',
+        'diag2.title':'2. Asynchronous Sprints','diag2.desc':'Requirements tracked digitally. Instant updates to your staging environment.',
+        'diag3.title':'3. Absolute Code Sovereignty','diag3.desc':'No lock-in contracts. Complete clean HTML/CSS/JS or Next.js code handover.',
+        'contact.title':'Initial Briefing Request',
+        'contact.desc':'Initiate a briefing for your custom digital asset. Submit requirements directly or request an estimate quote via secure mail.',
+        'contact.maillabel':'Secure Mail Endpoint','contact.cta':'Establish Mail Briefing',
+        'footer.copyright':'&copy; 2026 Groenewald Incorporate. South Africa. All structures encrypted.'
+      },
+      af: {
+        'nav.home':'Tuis','nav.services':'Dienste','nav.showcase':'Uitstalling','nav.method':'Metode','nav.contact':'Kontak','nav.consult':'Konsulteer',
+        'hero.title':'Presisie-Vervaardigde <span>Digitale Bates.</span>',
+        'hero.desc':'Ons stel hoëprestasie pasgemaakte webtoepassings, gestruktureerde databasis-integrasies en outomatiese pyplyne saam vir professionele dienste en plaaslike firmas in Suid-Afrika.',
+        'hero.cta1':'Open Uitstalling','hero.cta2':'Aanvanklike Inligtingsessie',
+        'services.title':'Tegniese <span>Vermoëns.</span>',
+        'svc1.title':'Pasgemaakte Webplatforms',
+        'svc1.desc':'Ons bou responsiewe, hoëprestasie gebruikerskoppelvlakke en pasgemaakte kliënt-paneelborde geïntegreer met brandmure, verifikasielae en betaalpoorte.',
+        'svc2.title':'Algoritmiese Pyplyne',
+        'svc2.desc':'Ons bou outomatiese Python-agterkantstelsels wat gidse deursoek, gestruktureerde data organiseer en direk met LLM-afleidingsenjins (OpenRouter / OpenAI) koppel.',
+        'showcase.title':'Aktiewe <span>Ontplooiings.</span>',
+        'proj1.desc':'’n Premium korporatiewe handelsregfirma-webtoepassing met interaktiewe praktykmodules, rol-diepte rotasies en ’n gevorderde inligtingsessie-kalenderskeduleerder.',
+        'proj2.desc':'Hoëprestasie digitale spyskaart-betaling. Bevat interaktiewe burger-konfigurasiemetings, totale mandjieberekening-aanpassings en direkte WhatsApp-roeteringmerkers.',
+        'proj3.desc':'Minimalistiese, hoëkontras plaaslike besigheidsbemarking vir ’n haarsalon in Strand, Kaapstad. Geoptimeer vir vinnige laaispoed en plaaslike kaart-integrasies.',
+        'proj4.desc':'Warm-uitleg loodsblad-prototipe vir ’n troeteldierboetiek in Somerset-Wes. Integreer kliënt-resensienodusse, bedryfsuurtabelle en klik-om-te-bel snellers.',
+        'showcase.launch':'Begin Lewendige Weergawe',
+        'adv.title':'Die Asinkroniese Argitektuur-Voordeel',
+        'adv.p1':'Tradisionele ontwikkelaars koördineer eindelose lewendige vergaderings. Ons bou asinkronies. Jy dien rou bloudrukke of teksvereistes in, en ons struktureer die kode met gevorderde agentiese KI-argitekture (Antigravity & Claude Code) teen 5x spoed.',
+        'adv.p2':'Geen rekeningverrassings nie. Sprinte word teen vaste koste-toewysings uitgevoer. Jy behou volledige lêereienaarskap en Git-bewaarplekgidse direk met kode-oorhandiging.',
+        'diag1.title':'1. Gemonitorde Kode Kompileer','diag1.desc':'Geen sjabloon-boilerplate nie. Kodebasisse saamgestel met lint-validasies.',
+        'diag2.title':'2. Asinkroniese Sprinte','diag2.desc':'Vereistes digitaal nagespoor. Onmiddellike opdaterings na jou verhoogomgewing.',
+        'diag3.title':'3. Absolute Kode-Soewereiniteit','diag3.desc':'Geen vasgekeer-kontrakte nie. Volledige skoon HTML/CSS/JS of Next.js kode-oorhandiging.',
+        'contact.title':'Aanvanklike Inligtingsessie-Versoek',
+        'contact.desc':'Begin ’n inligtingsessie vir jou pasgemaakte digitale bate. Dien vereistes direk in of versoek ’n kwotasie via veilige pos.',
+        'contact.maillabel':'Veilige Pos-Eindpunt','contact.cta':'Begin Pos-Inligtingsessie',
+        'footer.copyright':'&copy; 2026 Groenewald Incorporate. Suid-Afrika. Alle strukture geïnkripteer.'
+      },
+      pt: {
+        'nav.home':'Início','nav.services':'Serviços','nav.showcase':'Portfólio','nav.method':'Método','nav.contact':'Contato','nav.consult':'Consultar',
+        'hero.title':'Ativos Digitais <span>de Alta Precisão.</span>',
+        'hero.desc':'Desenvolvemos aplicações web personalizadas de alto desempenho, integrações estruturadas de banco de dados e pipelines automatizados para serviços profissionais e empresas locais na África do Sul.',
+        'hero.cta1':'Abrir Portfólio','hero.cta2':'Briefing Inicial',
+        'services.title':'Capacidades <span>Técnicas.</span>',
+        'svc1.title':'Plataformas Web Personalizadas',
+        'svc1.desc':'Desenvolvemos interfaces de usuário responsivas e de alto desempenho e painéis de cliente personalizados, integrados com firewalls, camadas de autenticação e gateways de pagamento.',
+        'svc2.title':'Pipelines Algorítmicos',
+        'svc2.desc':'Construímos sistemas backend automatizados em Python que rastreiam diretórios, organizam dados estruturados e se conectam diretamente a motores de inferência LLM (OpenRouter / OpenAI).',
+        'showcase.title':'Implantações <span>Ativas.</span>',
+        'proj1.desc':'Uma aplicação web premium para um escritório de advocacia empresarial, com módulos de prática interativos, rotações em profundidade de rolagem e um agendador de calendário de briefing avançado.',
+        'proj2.desc':'Checkout de cardápio digital de alto desempenho. Inclui métricas interativas de configuração de hambúrgueres, ajustes de cálculo total do carrinho e tags de roteamento direto para WhatsApp.',
+        'proj3.desc':'Identidade visual minimalista e de alto contraste para um salão de cabeleireiro em Strand, Cidade do Cabo. Otimizado para carregamento rápido e integrações com mapas locais.',
+        'proj4.desc':'Protótipo de landing page com layout acolhedor para uma boutique de animais em Somerset West. Integra avaliações de clientes, tabelas de horário de funcionamento e gatilhos de clique para ligar.',
+        'showcase.launch':'Abrir Versão Ao Vivo',
+        'adv.title':'A Vantagem da Arquitetura Assíncrona',
+        'adv.p1':'Desenvolvedores tradicionais coordenam reuniões ao vivo intermináveis. Nós construímos de forma assíncrona. Você envia esboços ou requisitos em texto, e nós estruturamos o código usando arquiteturas avançadas de IA agêntica (Antigravity & Claude Code) a uma velocidade 5x maior.',
+        'adv.p2':'Sem surpresas na cobrança. Os sprints são executados com alocações de custo fixo. Você mantém a propriedade total dos arquivos e dos diretórios do repositório Git assim que o código é entregue.',
+        'diag1.title':'1. Código Monitorado e Compilado','diag1.desc':'Sem código boilerplate de modelo. Bases de código compiladas com validações de lint.',
+        'diag2.title':'2. Sprints Assíncronos','diag2.desc':'Requisitos rastreados digitalmente. Atualizações instantâneas para o seu ambiente de teste.',
+        'diag3.title':'3. Soberania Total do Código','diag3.desc':'Sem contratos de dependência. Entrega completa de código limpo em HTML/CSS/JS ou Next.js.',
+        'contact.title':'Solicitação de Briefing Inicial',
+        'contact.desc':'Inicie um briefing para o seu ativo digital personalizado. Envie os requisitos diretamente ou solicite um orçamento por e-mail seguro.',
+        'contact.maillabel':'Endpoint de E-mail Seguro','contact.cta':'Iniciar Briefing por E-mail',
+        'footer.copyright':'&copy; 2026 Groenewald Incorporate. África do Sul. Todas as estruturas criptografadas.'
+      },
+      fr: {
+        'nav.home':'Accueil','nav.services':'Services','nav.showcase':'Réalisations','nav.method':'Méthode','nav.contact':'Contact','nav.consult':'Consulter',
+        'hero.title':'Actifs Numériques <span>de Précision.</span>',
+        'hero.desc':'Nous concevons des applications web sur mesure haute performance, des intégrations de bases de données structurées et des pipelines automatisés pour les services professionnels et les entreprises locales en Afrique du Sud.',
+        'hero.cta1':'Voir les Réalisations','hero.cta2':'Briefing Initial',
+        'services.title':'Capacités <span>Techniques.</span>',
+        'svc1.title':'Plateformes Web Sur Mesure',
+        'svc1.desc':'Nous concevons des interfaces réactives et performantes ainsi que des tableaux de bord client personnalisés, intégrés avec des pare-feux, des couches d’authentification et des passerelles de paiement.',
+        'svc2.title':'Pipelines Algorithmiques',
+        'svc2.desc':'Nous développons des systèmes backend Python automatisés qui parcourent des répertoires, organisent des données structurées et se connectent directement aux moteurs d’inférence LLM (OpenRouter / OpenAI).',
+        'showcase.title':'Déploiements <span>Actifs.</span>',
+        'proj1.desc':'Une application web premium pour un cabinet d’avocats d’affaires, avec des modules de pratique interactifs, des rotations liées au défilement et un planificateur de calendrier de briefing avancé.',
+        'proj2.desc':'Commande de menu numérique haute performance. Comprend des métriques interactives de configuration de burgers, des ajustements du calcul total du panier et des liens de routage direct vers WhatsApp.',
+        'proj3.desc':'Identité de marque minimaliste et à fort contraste pour un salon de coiffure à Strand, Le Cap. Optimisée pour des vitesses de chargement rapides et l’intégration de cartes locales.',
+        'proj4.desc':'Prototype de page d’atterrissage à la mise en page chaleureuse pour une boutique animalière à Somerset West. Intègre les avis clients, les tableaux d’horaires et des déclencheurs de clic-pour-appeler.',
+        'showcase.launch':'Ouvrir la Version en Ligne',
+        'adv.title':'L’Avantage de l’Architecture Asynchrone',
+        'adv.p1':'Les développeurs traditionnels multiplient les réunions en direct. Nous travaillons de façon asynchrone. Vous soumettez vos plans ou exigences par écrit, et nous structurons le code à l’aide d’architectures d’IA agentique avancées (Antigravity & Claude Code), 5 fois plus vite.',
+        'adv.p2':'Aucune surprise sur la facturation. Les sprints sont exécutés à coûts fixes. Vous conservez la pleine propriété des fichiers et des dépôts Git dès la livraison du code.',
+        'diag1.title':'1. Code Surveillé et Compilé','diag1.desc':'Aucun modèle générique. Bases de code compilées avec validations de lint.',
+        'diag2.title':'2. Sprints Asynchrones','diag2.desc':'Exigences suivies numériquement. Mises à jour instantanées de votre environnement de préproduction.',
+        'diag3.title':'3. Souveraineté Totale du Code','diag3.desc':'Aucun contrat de dépendance. Livraison complète de code propre HTML/CSS/JS ou Next.js.',
+        'contact.title':'Demande de Briefing Initial',
+        'contact.desc':'Lancez un briefing pour votre actif numérique sur mesure. Soumettez vos exigences directement ou demandez un devis par courrier sécurisé.',
+        'contact.maillabel':'Point de Contact E-mail Sécurisé','contact.cta':'Démarrer le Briefing par E-mail',
+        'footer.copyright':'&copy; 2026 Groenewald Incorporate. Afrique du Sud. Toutes les structures chiffrées.'
+      },
+      es: {
+        'nav.home':'Inicio','nav.services':'Servicios','nav.showcase':'Portafolio','nav.method':'Método','nav.contact':'Contacto','nav.consult':'Consultar',
+        'hero.title':'Activos Digitales <span>de Precisión.</span>',
+        'hero.desc':'Desarrollamos aplicaciones web personalizadas de alto rendimiento, integraciones estructuradas de bases de datos y flujos automatizados para servicios profesionales y empresas locales en Sudáfrica.',
+        'hero.cta1':'Ver Portafolio','hero.cta2':'Briefing Inicial',
+        'services.title':'Capacidades <span>Técnicas.</span>',
+        'svc1.title':'Plataformas Web Personalizadas',
+        'svc1.desc':'Creamos interfaces responsivas y de alto rendimiento y paneles de cliente personalizados, integrados con firewalls, capas de autenticación y pasarelas de pago.',
+        'svc2.title':'Pipelines Algorítmicos',
+        'svc2.desc':'Construimos sistemas backend automatizados en Python que rastrean directorios, organizan datos estructurados y se conectan directamente a motores de inferencia LLM (OpenRouter / OpenAI).',
+        'showcase.title':'Despliegues <span>Activos.</span>',
+        'proj1.desc':'Una aplicación web premium para un bufete de abogados corporativos, con módulos de práctica interactivos, rotaciones según el desplazamiento y un programador de calendario de briefing avanzado.',
+        'proj2.desc':'Pedido de menú digital de alto rendimiento. Incluye métricas interactivas de configuración de hamburguesas, ajustes de cálculo total del carrito y etiquetas de enrutamiento directo a WhatsApp.',
+        'proj3.desc':'Identidad de marca minimalista y de alto contraste para una peluquería en Strand, Ciudad del Cabo. Optimizada para tiempos de carga rápidos e integración con mapas locales.',
+        'proj4.desc':'Prototipo de página de aterrizaje con diseño cálido para una boutique de mascotas en Somerset West. Integra reseñas de clientes, tablas de horarios y activadores de clic para llamar.',
+        'showcase.launch':'Abrir Versión en Vivo',
+        'adv.title':'La Ventaja de la Arquitectura Asíncrona',
+        'adv.p1':'Los desarrolladores tradicionales coordinan interminables reuniones en vivo. Nosotros trabajamos de forma asíncrona. Usted envía sus planos o requisitos por texto, y nosotros estructuramos el código con arquitecturas avanzadas de IA agéntica (Antigravity & Claude Code) a una velocidad 5 veces mayor.',
+        'adv.p2':'Sin sorpresas en la facturación. Los sprints se ejecutan con asignaciones de costo fijo. Usted conserva la propiedad total de los archivos y de los repositorios Git al momento de la entrega del código.',
+        'diag1.title':'1. Código Monitoreado y Compilado','diag1.desc':'Sin plantillas genéricas. Bases de código compiladas con validaciones de lint.',
+        'diag2.title':'2. Sprints Asíncronos','diag2.desc':'Requisitos rastreados digitalmente. Actualizaciones instantáneas a su entorno de pruebas.',
+        'diag3.title':'3. Soberanía Total del Código','diag3.desc':'Sin contratos de dependencia. Entrega completa de código limpio en HTML/CSS/JS o Next.js.',
+        'contact.title':'Solicitud de Briefing Inicial',
+        'contact.desc':'Inicie un briefing para su activo digital personalizado. Envíe los requisitos directamente o solicite un presupuesto por correo seguro.',
+        'contact.maillabel':'Punto de Contacto de Correo Seguro','contact.cta':'Iniciar Briefing por Correo',
+        'footer.copyright':'&copy; 2026 Groenewald Incorporate. Sudáfrica. Todas las estructuras cifradas.'
+      },
+      de: {
+        'nav.home':'Start','nav.services':'Leistungen','nav.showcase':'Referenzen','nav.method':'Methode','nav.contact':'Kontakt','nav.consult':'Beratung',
+        'hero.title':'Präzisionsgefertigte <span>Digitale Assets.</span>',
+        'hero.desc':'Wir entwickeln leistungsstarke, maßgeschneiderte Webanwendungen, strukturierte Datenbankintegrationen und automatisierte Pipelines für professionelle Dienstleister und lokale Unternehmen in Südafrika.',
+        'hero.cta1':'Referenzen ansehen','hero.cta2':'Erstes Briefing',
+        'services.title':'Technische <span>Fähigkeiten.</span>',
+        'svc1.title':'Individuelle Web-Plattformen',
+        'svc1.desc':'Wir erstellen reaktionsschnelle, leistungsstarke Benutzeroberflächen und individuelle Kunden-Dashboards, integriert mit Firewalls, Authentifizierungsebenen und Zahlungs-Gateways.',
+        'svc2.title':'Algorithmische Pipelines',
+        'svc2.desc':'Wir entwickeln automatisierte Python-Backend-Systeme, die Verzeichnisse durchsuchen, strukturierte Daten organisieren und direkt mit LLM-Inferenz-Engines (OpenRouter / OpenAI) kommunizieren.',
+        'showcase.title':'Aktive <span>Deployments.</span>',
+        'proj1.desc':'Eine Premium-Webanwendung für eine Wirtschaftskanzlei mit interaktiven Fachmodulen, scrollabhängigen Rotationen und einem fortschrittlichen Briefing-Kalenderplaner.',
+        'proj2.desc':'Leistungsstarker digitaler Menü-Checkout. Mit interaktiven Burger-Konfigurationsmetriken, Anpassungen der Warenkorbberechnung und direkten WhatsApp-Routing-Tags.',
+        'proj3.desc':'Minimalistisches, kontrastreiches Branding für einen Friseursalon in Strand, Kapstadt. Optimiert für schnelle Ladezeiten und die Integration lokaler Karten.',
+        'proj4.desc':'Landingpage-Prototyp mit warmem Layout für eine Tierboutique in Somerset West. Integriert Kundenbewertungen, Öffnungszeiten-Tabellen und Klick-zum-Anrufen-Auslöser.',
+        'showcase.launch':'Live-Version öffnen',
+        'adv.title':'Der Vorteil asynchroner Architektur',
+        'adv.p1':'Herkömmliche Entwickler koordinieren endlose Live-Meetings. Wir arbeiten asynchron. Sie reichen Entwürfe oder Textanforderungen ein, und wir strukturieren den Code mit fortschrittlichen agentischen KI-Architekturen (Antigravity & Claude Code) – 5-mal schneller.',
+        'adv.p2':'Keine Abrechnungsüberraschungen. Sprints werden zu festen Kostensätzen ausgeführt. Sie behalten das volle Eigentum an den Dateien und Git-Repositorys direkt bei der Code-Übergabe.',
+        'diag1.title':'1. Überwachte Code-Kompilierung','diag1.desc':'Keine Vorlagen-Boilerplate. Codebasen mit Lint-Validierungen kompiliert.',
+        'diag2.title':'2. Asynchrone Sprints','diag2.desc':'Anforderungen digital verfolgt. Sofortige Updates Ihrer Staging-Umgebung.',
+        'diag3.title':'3. Absolute Code-Souveränität','diag3.desc':'Keine Bindungsverträge. Vollständige Übergabe von sauberem HTML/CSS/JS- oder Next.js-Code.',
+        'contact.title':'Anfrage für Erstes Briefing',
+        'contact.desc':'Starten Sie ein Briefing für Ihr individuelles digitales Asset. Reichen Sie Anforderungen direkt ein oder fordern Sie einen Kostenvoranschlag per sicherer E-Mail an.',
+        'contact.maillabel':'Sicherer E-Mail-Endpunkt','contact.cta':'Briefing per E-Mail starten',
+        'footer.copyright':'&copy; 2026 Groenewald Incorporate. Südafrika. Alle Strukturen verschlüsselt.'
+      },
+      nl: {
+        'nav.home':'Home','nav.services':'Diensten','nav.showcase':'Portfolio','nav.method':'Methode','nav.contact':'Contact','nav.consult':'Adviseren',
+        'hero.title':'Precisie-Gebouwde <span>Digitale Assets.</span>',
+        'hero.desc':'Wij bouwen hoogwaardige webapplicaties op maat, gestructureerde database-integraties en geautomatiseerde pipelines voor professionele dienstverleners en lokale bedrijven in Zuid-Afrika.',
+        'hero.cta1':'Portfolio openen','hero.cta2':'Eerste Briefing',
+        'services.title':'Technische <span>Mogelijkheden.</span>',
+        'svc1.title':'Webplatforms op Maat',
+        'svc1.desc':'Wij bouwen responsieve, hoogwaardige gebruikersinterfaces en aangepaste klantdashboards, geïntegreerd met firewalls, authenticatielagen en betaalgateways.',
+        'svc2.title':'Algoritmische Pipelines',
+        'svc2.desc':'Wij bouwen geautomatiseerde Python-backendsystemen die mappen doorzoeken, gestructureerde data organiseren en rechtstreeks koppelen met LLM-inferentie-engines (OpenRouter / OpenAI).',
+        'showcase.title':'Actieve <span>Implementaties.</span>',
+        'proj1.desc':'Een premium webapplicatie voor een zakelijk advocatenkantoor, met interactieve praktijkmodules, scrolldiepte-rotaties en een geavanceerde briefing-kalenderplanner.',
+        'proj2.desc':'Hoogwaardige digitale menu-checkout. Met interactieve burger-configuratiemetrieken, aanpassingen van de totale winkelwagenberekening en directe WhatsApp-routeringstags.',
+        'proj3.desc':'Minimalistische, contrastrijke branding voor een kapsalon in Strand, Kaapstad. Geoptimaliseerd voor snelle laadtijden en integratie met lokale kaarten.',
+        'proj4.desc':'Landingspagina-prototype met een warme lay-out voor een dierenboetiek in Somerset West. Integreert klantbeoordelingen, openingstijden-tabellen en klik-om-te-bellen triggers.',
+        'showcase.launch':'Live versie openen',
+        'adv.title':'Het Voordeel van Asynchrone Architectuur',
+        'adv.p1':'Traditionele ontwikkelaars coördineren eindeloze live vergaderingen. Wij bouwen asynchroon. U dient ruwe blauwdrukken of tekstvereisten in, en wij structureren de code met geavanceerde agentische AI-architecturen (Antigravity & Claude Code) op 5x snelheid.',
+        'adv.p2':'Geen verrassingen op de factuur. Sprints worden uitgevoerd tegen vaste kosten. U behoudt volledig eigenaarschap van de bestanden en Git-repository’s direct bij de code-overdracht.',
+        'diag1.title':'1. Gemonitorde Code-Compilatie','diag1.desc':'Geen sjabloon-boilerplate. Codebases gecompileerd met lint-validaties.',
+        'diag2.title':'2. Asynchrone Sprints','diag2.desc':'Vereisten digitaal gevolgd. Directe updates naar uw staging-omgeving.',
+        'diag3.title':'3. Absolute Code-Soevereiniteit','diag3.desc':'Geen lock-in-contracten. Volledige overdracht van schone HTML/CSS/JS- of Next.js-code.',
+        'contact.title':'Verzoek voor Eerste Briefing',
+        'contact.desc':'Start een briefing voor uw digitale asset op maat. Dien vereisten direct in of vraag een offerte aan via beveiligde e-mail.',
+        'contact.maillabel':'Beveiligd E-mail Eindpunt','contact.cta':'Start E-mail Briefing',
+        'footer.copyright':'&copy; 2026 Groenewald Incorporate. Zuid-Afrika. Alle structuren versleuteld.'
+      },
+      it: {
+        'nav.home':'Home','nav.services':'Servizi','nav.showcase':'Portfolio','nav.method':'Metodo','nav.contact':'Contatti','nav.consult':'Consulenza',
+        'hero.title':'Asset Digitali <span>di Precisione.</span>',
+        'hero.desc':'Sviluppiamo applicazioni web personalizzate ad alte prestazioni, integrazioni strutturate di database e pipeline automatizzate per servizi professionali e aziende locali in Sudafrica.',
+        'hero.cta1':'Apri il Portfolio','hero.cta2':'Briefing Iniziale',
+        'services.title':'Capacità <span>Tecniche.</span>',
+        'svc1.title':'Piattaforme Web Personalizzate',
+        'svc1.desc':'Creiamo interfacce utente reattive e ad alte prestazioni e dashboard cliente personalizzate, integrate con firewall, livelli di autenticazione e gateway di pagamento.',
+        'svc2.title':'Pipeline Algoritmiche',
+        'svc2.desc':'Costruiamo sistemi backend Python automatizzati che analizzano directory, organizzano dati strutturati e si collegano direttamente a motori di inferenza LLM (OpenRouter / OpenAI).',
+        'showcase.title':'Deployment <span>Attivi.</span>',
+        'proj1.desc':'Un’applicazione web premium per uno studio legale commerciale, con moduli di pratica interattivi, rotazioni legate allo scorrimento e un pianificatore avanzato del calendario di briefing.',
+        'proj2.desc':'Checkout di menu digitale ad alte prestazioni. Include metriche interattive di configurazione dei burger, regolazioni del calcolo totale del carrello e tag di instradamento diretto a WhatsApp.',
+        'proj3.desc':'Identità di marca minimalista e ad alto contrasto per un salone di parrucchiere a Strand, Città del Capo. Ottimizzata per tempi di caricamento rapidi e integrazione con le mappe locali.',
+        'proj4.desc':'Prototipo di landing page dal layout accogliente per una boutique per animali a Somerset West. Integra recensioni dei clienti, tabelle degli orari di apertura e trigger click-to-call.',
+        'showcase.launch':'Apri la Versione Live',
+        'adv.title':'Il Vantaggio dell’Architettura Asincrona',
+        'adv.p1':'Gli sviluppatori tradizionali coordinano infinite riunioni dal vivo. Noi lavoriamo in modo asincrono. Tu invii i progetti o i requisiti in formato testo e noi strutturiamo il codice con architetture di IA agentica avanzate (Antigravity & Claude Code) a velocità 5x.',
+        'adv.p2':'Nessuna sorpresa in fattura. Gli sprint vengono eseguiti con allocazioni di costo fisse. Mantieni la piena proprietà dei file e delle directory del repository Git direttamente alla consegna del codice.',
+        'diag1.title':'1. Codice Monitorato e Compilato','diag1.desc':'Nessun boilerplate da template. Codebase compilate con validazioni di lint.',
+        'diag2.title':'2. Sprint Asincroni','diag2.desc':'Requisiti tracciati digitalmente. Aggiornamenti istantanei al tuo ambiente di staging.',
+        'diag3.title':'3. Sovranità Totale del Codice','diag3.desc':'Nessun contratto vincolante. Consegna completa di codice pulito HTML/CSS/JS o Next.js.',
+        'contact.title':'Richiesta di Briefing Iniziale',
+        'contact.desc':'Avvia un briefing per il tuo asset digitale personalizzato. Invia i requisiti direttamente o richiedi un preventivo tramite e-mail sicura.',
+        'contact.maillabel':'Endpoint E-mail Sicuro','contact.cta':'Avvia Briefing via E-mail',
+        'footer.copyright':'&copy; 2026 Groenewald Incorporate. Sudafrica. Tutte le strutture crittografate.'
+      },
+      zu: {
+        'nav.home':'Ikhaya','nav.services':'Izinsizakalo','nav.showcase':'Imisebenzi','nav.method':'Indlela','nav.contact':'Xhumana','nav.consult':'Bonisana',
+        'hero.title':'Amafa Edijithali <span>Akhiwe Ngokunembayo.</span>',
+        'hero.desc':'Sakha izinhlelo zokusebenza zewebhu ezenziwe ngokwezifiso ezisebenza kahle, ukuxhumaniswa kwedathabhesi okuhlelekile, kanye nemigudu ezenzakalelayo yezinkampani zochwepheshe nezindawo zaseNingizimu Afrika.',
+        'hero.cta1':'Vula Imisebenzi','hero.cta2':'Ingxoxo Yokuqala',
+        'services.title':'Amakhono <span>Ezobuchwepheshe.</span>',
+        'svc1.title':'Amapulatifomu Ewebhu Angokwezifiso',
+        'svc1.desc':'Sakha izinhlelo zomsebenzisi ezisheshayo neziphendulayo kanye namadeshibhodi amakhasimende enziwe ngokwezifiso, axhunywe nezivikeli (firewalls), izendlalelo zokuqinisekisa, kanye namasango okukhokha.',
+        'svc2.title':'Imigudu Ye-Algorithm',
+        'svc2.desc':'Sakha izinhlelo ze-backend ze-Python ezizenzakalelayo ezisesha izikhombisi-mihlahlandlela, zihlele idatha ehlelekile, futhi zixhumane ngqo nezinjini ze-LLM (OpenRouter / OpenAI).',
+        'showcase.title':'Ukusetshenziswa <span>Okusebenzayo.</span>',
+        'proj1.desc':'Uhlelo lokusebenza lwewebhu oluphambili lwenkampani yabameli bezomthetho wezohwebo, olunamamojula okusebenza axhumanayo, ukuphenduka ngokususelwa ekuskloleni, kanye nesihleli sekhalenda sengxoxo esithuthukisiwe.',
+        'proj2.desc':'Ukukhokha kwemenyu yedijithali okusebenza kahle. Kunezinombolo zokulungiselela amabhega ezixhumanayo, izilungiso zokubalwa kwekati eliphelele, kanye namathegi okuqondisa ngqo e-WhatsApp.',
+        'proj3.desc':'Uphawu lwebhizinisi olulula, olunombala oqhamile lwesaluni yezinwele eStrand, eKapa. Lwenzelwe ukulayisha ngesivinini nokuxhumana namamephu asendaweni.',
+        'proj4.desc':'Iphrothothayiphi yekhasi lokufika elinesimo esifudumele lebhutshi lezilwane eSomerset West. Ihlanganisa ukubuyekezwa kwamakhasimende, amathebula amahora okuvula, kanye nezidubulisi zokuchofoza-ukushayela.',
+        'showcase.launch':'Vula Uhlelo Oluphilayo',
+        'adv.title':'Inzuzo Yokwakha Nge-Asynchronous',
+        'adv.p1':'Onjiniyela bendabuko bahlela imihlangano eminingi ephilayo. Thina sakha nge-asynchronous. Uthumela imidwebo noma izidingo ngombhalo, bese sihlela ikhodi sisebenzisa i-AI ethuthukisiwe (Antigravity & Claude Code) ngesivinini esiphindwe ka-5.',
+        'adv.p2':'Awekho amamangaliso ekhredithi. Ama-sprint enziwa ngezindleko ezimisiwe. Ugcina ubunikazi obugcwele bamafayela kanye nezindawo zokugcina ze-Git ngokushesha lapho ikhodi idluliselwa.',
+        'diag1.title':'1. Ikhodi Eqashiwe Iyahlanganiswa','diag1.desc':'Alukho uhlaka lwesifanekiso. Ama-codebase ahlanganiswa nokuqinisekiswa kwe-lint.',
+        'diag2.title':'2. Ama-Sprint E-Asynchronous','diag2.desc':'Izidingo zilandelelwa ngedijithali. Izibuyekezo ezisheshayo endaweni yakho yokulinganisa.',
+        'diag3.title':'3. Ubukhosi Obuphelele Bekhodi','diag3.desc':'Ayikho inkontileka evalelayo. Ukudluliselwa okuphelele kwekhodi ehlanzekile ye-HTML/CSS/JS noma i-Next.js.',
+        'contact.title':'Isicelo Sengxoxo Yokuqala',
+        'contact.desc':'Qala ingxoxo yefa lakho ledijithali elenziwe ngokwezifiso. Thumela izidingo ngqo noma ucele isilinganiso sentengo nge-imeyili evikelekile.',
+        'contact.maillabel':'Indawo Ye-imeyili Evikelekile','contact.cta':'Qala Ingxoxo Nge-imeyili',
+        'footer.copyright':'&copy; 2026 Groenewald Incorporate. iNingizimu Afrika. Zonke izakhiwo zibethelwe.'
+      },
+      xh: {
+        'nav.home':'Ikhaya','nav.services':'Iinkonzo','nav.showcase':'Imisebenzi','nav.method':'Indlela','nav.contact':'Qhagamshelana','nav.consult':'Bonisana',
+        'hero.title':'Ii-asethi Zedijithali <span>Ezenziwe Ngokuchanekileyo.</span>',
+        'hero.desc':'Senza izicelo zewebhu ezenziwe ngokwezifiso ezisebenza ngamandla, ukudibaniswa kwe-database okucwangcisiweyo, kunye nemigudu ezenzekelayo yeenkonzo zobungcali kunye neefemu zasekhaya eMzantsi Afrika.',
+        'hero.cta1':'Vula Imisebenzi','hero.cta2':'Ingxoxo Yokuqala',
+        'services.title':'Izakhono <span>Zobugcisa.</span>',
+        'svc1.title':'Amaqonga Ewebhu Angokwezifiso',
+        'svc1.desc':'Senza ii-interface zomsebenzisi ezikhawulezayo neziphendulayo kunye needashboard zabaxumi ezenziwe ngokwezifiso, ezidityaniswe neefirewall, imaleko yokuqinisekisa, kunye namasango okuhlawula.',
+        'svc2.title':'Imigudu Ye-Algorithm',
+        'svc2.desc':'Sakha iinkqubo ze-backend ze-Python ezizenzekelayo ezikhangela iidayirekthri, zicwangcise idatha ecwangcisiweyo, kwaye zinxibelelane ngqo neenjini ze-LLM (OpenRouter / OpenAI).',
+        'showcase.title':'Ukusetyenziswa <span>Okusebenzayo.</span>',
+        'proj1.desc':'Isicelo sewebhu esiphambili senkampani yamagqwetha oshishino, esineemodyuli zoqheliselo ezinxibelelanayo, ukujikeleza ngokusekwe ekuskrolweni, kunye nesicwangcisi sekhalenda sengxoxo esiphuculweyo.',
+        'proj2.desc':'Ukuhlawula kwimenyu yedijithali okusebenza ngamandla. Kuquka iimetriki zolungiselelo lweeburger ezinxibelelanayo, uhlengahlengiso lokubalwa kwenqwelo epheleleyo, kunye neethegi zokuthumela ngqo kwi-WhatsApp.',
+        'proj3.desc':'Uphawu loshishino olulula, olunombala ophezulu lwesaluni yeenwele eStrand, eKapa. Lwenzelwe isantya sokulayisha esikhawulezayo kunye nokudibanisa iimephu zasekhaya.',
+        'proj4.desc':'Iphrothothayiphu yephepha lokufika elinolwakhiwo olufudumeleyo lwevenkile yezilwanyana eSomerset West. Idibanisa uphononongo lwabaxumi, iitheyibhile zeeyure zokuvula, kunye nezinto ezicofa-ukutsalela umnxeba.',
+        'showcase.launch':'Vula Inguqulo Ephilayo',
+        'adv.title':'Ingenelo Yokwakha Nge-Asynchronous',
+        'adv.p1':'Abaphuhlisi bendabuko baququzelela iintlanganiso ezingapheliyo eziphilayo. Thina sakha nge-asynchronous. Uthumela izicwangciso okanye iimfuno ngombhalo, kwaye sicwangcisa ikhowudi sisebenzisa i-AI ephuculweyo (Antigravity & Claude Code) ngesantya esiphindwe ka-5.',
+        'adv.p2':'Akukho zimangaliso kwibhili. Ii-sprint zenziwa ngeendleko ezimiselweyo. Ugcina ubunini obupheleleyo beefayile kunye neevimba ze-Git ngokukhawuleza xa ikhowudi inikezelwa.',
+        'diag1.title':'1. Ikhowudi Ejongiweyo Iyadityaniswa','diag1.desc':'Akukho template boilerplate. Ii-codebase zidityaniswa nokuqinisekiswa kwe-lint.',
+        'diag2.title':'2. Ii-Sprint Ze-Asynchronous','diag2.desc':'Iimfuno zilandelelwa ngedijithali. Uhlaziyo olukhawulezayo kwindawo yakho yovavanyo.',
+        'diag3.title':'3. Ulongamo Olupheleleyo Lwekhowudi','diag3.desc':'Akukho zivumelwano zokuvalela. Ukunikezelwa okupheleleyo kwekhowudi ecocekileyo ye-HTML/CSS/JS okanye i-Next.js.',
+        'contact.title':'Isicelo Sengxoxo Yokuqala',
+        'contact.desc':'Qala ingxoxo ye-asethi yakho yedijithali eyenziwe ngokwezifiso. Thumela iimfuno ngqo okanye ucele uxabiso nge-imeyile ekhuselekileyo.',
+        'contact.maillabel':'Indawo Ye-imeyile Ekhuselekileyo','contact.cta':'Qala Ingxoxo Nge-imeyile',
+        'footer.copyright':'&copy; 2026 Groenewald Incorporate. UMzantsi Afrika. Zonke izakhiwo zibhalwe ngokufihlakeleyo.'
+      }
+    };
+
+    var STORE = 'gi_lang';
+    var sel = document.getElementById('langSelect');
+    function tr(lang, key){ var L = T[lang]; if (L && L[key] != null) return L[key]; return T.en[key]; }
+    function apply(lang){
+      document.querySelectorAll('[data-i18n]').forEach(function(el){ var v = tr(lang, el.getAttribute('data-i18n')); if (v != null) el.textContent = v; });
+      document.querySelectorAll('[data-i18n-html]').forEach(function(el){ var v = tr(lang, el.getAttribute('data-i18n-html')); if (v != null) el.innerHTML = v; });
+      document.documentElement.lang = T[lang] ? lang : 'en';
+    }
+
+    var initial = '';
+    try { initial = localStorage.getItem(STORE) || ''; } catch(e){}
+    if (!initial){
+      var navLang = (navigator.language || 'en').slice(0,2).toLowerCase();
+      initial = T[navLang] ? navLang : 'en';   // only auto-select a fully-translated language
+    }
+    if (sel){
+      sel.value = initial;
+      if (sel.value !== initial){ initial = 'en'; sel.value = 'en'; } // guard if stored value isn't an option
+      sel.addEventListener('change', function(){
+        var l = sel.value;
+        try { localStorage.setItem(STORE, l); } catch(e){}
+        apply(l);
+      });
+    }
+    apply(initial);
   })();
   </script>
   <script>
