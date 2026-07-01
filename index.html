@@ -87,16 +87,17 @@
        ========================================================================== */
     .blueprint-grid {
       position: fixed;
-      top: 0;
+      top: -30vh;
       left: 0;
       width: 100vw;
-      height: 100vh;
+      height: 160vh;
       background-size: 80px 80px;
-      background-image: 
+      background-image:
         linear-gradient(to right, rgba(255, 255, 255, 0.012) 1px, transparent 1px),
         linear-gradient(to bottom, rgba(255, 255, 255, 0.012) 1px, transparent 1px);
       z-index: -2;
       pointer-events: none;
+      will-change: transform;
     }
 
     .glow-orb {
@@ -106,6 +107,7 @@
       opacity: 0.16;
       z-index: -3;
       pointer-events: none;
+      will-change: transform;
     }
 
     .glow-orb-1 {
@@ -127,13 +129,13 @@
     }
 
     @keyframes pulseOrb1 {
-      0% { transform: translate(0, 0) scale(1); }
-      100% { transform: translate(150px, 100px) scale(1.15); }
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(150px, 100px, 0); }
     }
 
     @keyframes pulseOrb2 {
-      0% { transform: translate(0, 0) scale(1); }
-      100% { transform: translate(-100px, -80px) scale(0.9); }
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(-100px, -80px, 0); }
     }
 
     /* Technical HUD Panel */
@@ -337,8 +339,8 @@
       width: 100%;
       z-index: 1000;
       background: rgba(6, 7, 9, 0.7);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
       transition: var(--transition);
     }
@@ -1519,21 +1521,28 @@
       });
     }
 
-    // Update Scroll Depth HUD
+    // Header + active-nav update, rAF-throttled so scroll stays smooth
+    let _uiTicking = false;
+    let _headerScrolled = null;
     window.addEventListener('scroll', () => {
-
-      
-      // Header backdrop effect
-      if (window.scrollY > 40) {
-        header.style.background = 'rgba(6, 7, 9, 0.95)';
-        header.style.borderBottom = '1px solid rgba(255,255,255,0.08)';
-      } else {
-        header.style.background = 'rgba(6, 7, 9, 0.7)';
-        header.style.borderBottom = '1px dashed rgba(255,255,255,0.05)';
-      }
-      
-      updateActiveNavLink();
-    });
+      if (_uiTicking) return;
+      _uiTicking = true;
+      requestAnimationFrame(() => {
+        const scrolled = window.scrollY > 40;
+        if (scrolled !== _headerScrolled) {
+          _headerScrolled = scrolled;
+          if (scrolled) {
+            header.style.background = 'rgba(6, 7, 9, 0.95)';
+            header.style.borderBottom = '1px solid rgba(255,255,255,0.08)';
+          } else {
+            header.style.background = 'rgba(6, 7, 9, 0.7)';
+            header.style.borderBottom = '1px dashed rgba(255,255,255,0.05)';
+          }
+        }
+        updateActiveNavLink();
+        _uiTicking = false;
+      });
+    }, { passive: true });
 
     // ==========================================
     // 2. Navigation Control Drawer
@@ -1552,24 +1561,24 @@
     drawerCloseBtn.addEventListener('click', toggleMenu);
     drawerOverlay.addEventListener('click', toggleMenu);
 
+    let _navSections = null, _navItems = null, _navActiveId = null;
     function updateActiveNavLink() {
-      const sections = document.querySelectorAll('section');
-      const navItems = document.querySelectorAll('.nav-item');
-      
+      if (!_navSections) _navSections = document.querySelectorAll('section');
+      if (!_navItems) _navItems = document.querySelectorAll('.nav-item');
+
+      const y = window.scrollY;
       let currentSectionId = 'home';
-      sections.forEach(section => {
+      _navSections.forEach(section => {
         const sectionTop = section.offsetTop - 150;
-        const sectionHeight = section.offsetHeight;
-        if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+        if (y >= sectionTop && y < sectionTop + section.offsetHeight) {
           currentSectionId = section.getAttribute('id');
         }
       });
-      
-      navItems.forEach(item => {
-        item.classList.remove('active');
-        if (item.getAttribute('href') === `#${currentSectionId}`) {
-          item.classList.add('active');
-        }
+
+      if (currentSectionId === _navActiveId) return; // nothing changed, skip DOM writes
+      _navActiveId = currentSectionId;
+      _navItems.forEach(item => {
+        item.classList.toggle('active', item.getAttribute('href') === `#${currentSectionId}`);
       });
     }
 
@@ -1622,7 +1631,7 @@
       renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
     } catch (e) { return; } // leaves static fallback visible
 
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     renderer.setSize(W, H, false);
 
     var group = new THREE.Group(); scene.add(group);
@@ -1780,12 +1789,14 @@
       if (on){
         document.body.appendChild(canvas);            // out of the transformed hero
         canvas.classList.add('bg-mode');
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1)); // dim full-screen backdrop: lower res is fine and much cheaper
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.position.set(0, 0, 9.5);
         renderer.setSize(window.innerWidth, window.innerHeight, false);
       } else {
         canvas.classList.remove('bg-mode');
         wrap.insertBefore(canvas, wrap.firstChild);    // back into the hero column
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
         var w = wrap.clientWidth || 1;
         camera.aspect = w / 420;
         camera.position.set(0, 0, baseZ);
@@ -1795,11 +1806,17 @@
     }
 
     if (!reduceMotion){
+      var _homeEl = document.getElementById('home');
+      var _heroTicking = false;
       window.addEventListener('scroll', function(){
-        var homeEl = document.getElementById('home');
-        var hb = homeEl ? homeEl.getBoundingClientRect().bottom : window.innerHeight;
-        setBgMode(hb < window.innerHeight * 0.25);          // engage once the hero has scrolled off
-        swayTarget = Math.sin(window.scrollY * 0.0016) * 2.6; // side-to-side drift with scroll depth
+        if (_heroTicking) return;
+        _heroTicking = true;
+        requestAnimationFrame(function(){
+          var hb = _homeEl ? _homeEl.getBoundingClientRect().bottom : window.innerHeight;
+          setBgMode(hb < window.innerHeight * 0.25);          // engage once the hero has scrolled off
+          swayTarget = Math.sin(window.scrollY * 0.0016) * 2.6; // side-to-side drift with scroll depth
+          _heroTicking = false;
+        });
       }, { passive: true });
     }
 
@@ -1934,11 +1951,19 @@
   </script>
   <script>
   // ===== Subtle background grid parallax on scroll (depth) =====
+  // Uses a GPU transform (not backgroundPosition) and rAF-throttling so it
+  // composites without repainting the full-viewport grid on every scroll event.
   (function(){
     var grid = document.querySelector('.blueprint-grid');
     if (!grid) return;
+    var ticking = false;
     window.addEventListener('scroll', function(){
-      grid.style.backgroundPosition = '0px ' + (-window.scrollY * 0.18).toFixed(1) + 'px';
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function(){
+        grid.style.transform = 'translate3d(0,' + (-window.scrollY * 0.05).toFixed(1) + 'px,0)';
+        ticking = false;
+      });
     }, { passive: true });
   })();
   </script>
